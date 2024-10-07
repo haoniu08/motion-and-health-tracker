@@ -1,7 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Button } from 'react-native'
 import React from 'react'
 
-export default function Diet() {
+export default function Diet( { navigation }) {
+
+  navigation.setOptions({
+    headerRight: () => (
+      <Button 
+        title="Add" 
+      />
+    ),
+  });
+
   return (
     <View>
       <Text>Diet</Text>

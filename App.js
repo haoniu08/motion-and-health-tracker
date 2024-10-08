@@ -1,29 +1,53 @@
 import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+import Styles from './utils/StylingUtils';
 import Activities from './screens/Activities';
 import Diet from './screens/Diet';
 import Settings  from './screens/Settings';
+import AddActivity from './screens/AddActivity';
+import AddDiet from './screens/AddDiet';
 
-const Tab = createBottomTabNavigator();
+const BottomTab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+function BottomTabs () {
+  return (
+    <BottomTab.Navigator>
+      <BottomTab.Screen name="Activities" component={Activities} />
+      <BottomTab.Screen name="Diet" component={Diet} />
+      <BottomTab.Screen name="Settings" component={Settings} />
+    </BottomTab.Navigator>
+  )
+}
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Activities" component={Activities} />
-        <Tab.Screen name="Diet" component={Diet} />
-        <Tab.Screen name="Settings" component={Settings} />
-      </Tab.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen name="BottomTabs" component={BottomTabs} options={{headerShown: false}}/>
+        <Stack.Screen 
+          name="AddActivity" 
+          component={AddActivity} 
+          options={{
+            title: "Add an Activity",
+            headerBackTitle: "Activity",
+          }}
+          
+          />
+        <Stack.Screen 
+          name="AddDiet" 
+          component={AddDiet} 
+          options={{
+            title: "Add A Diet Entry",
+            headerBackTitle: "Diet",
+          }}
+        />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
 });

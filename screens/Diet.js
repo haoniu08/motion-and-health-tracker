@@ -3,10 +3,15 @@ import React from 'react'
 
 export default function Diet( { navigation }) {
 
+  function handleAddPress () {
+    navigation.push('AddDiet')
+  }
+
   navigation.setOptions({
     headerRight: () => (
       <Button 
         title="Add" 
+        onPress={handleAddPress}
       />
     ),
   });

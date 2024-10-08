@@ -3,10 +3,15 @@ import { React, useState } from 'react'
 
 export default function Activities( { navigation }) {
 
+  function handleAddPress() {
+    navigation.navigate('AddActivity')
+  }
+
   navigation.setOptions({
     headerRight: () => (
       <Button 
         title="Add" 
+        onPress={handleAddPress}
       />
     ),
   });

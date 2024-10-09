@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import Styles from './utils/StylingUtils';
+import styling from './utils/StylingUtils';
 import Activities from './screens/Activities';
 import Diet from './screens/Diet';
 import Settings  from './screens/Settings';
@@ -49,7 +49,7 @@ export default function App() {
           component={AddActivity} 
           options={{
             title: "Add an Activity",
-            headerBackTitle: "Activity",
+            headerBackTitle: "Activities",
           }}
           
           />

@@ -1,12 +1,22 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { TouchableOpacity, StyleSheet } from 'react-native'
+import CustomText from './CustomText'
+import styling from '../utils/StylingUtils'
 import React from 'react'
 
-export default function CustomButton() {
+const CustomButton = ({
+  onPress,
+  title,
+}) => {
   return (
-    <View>
-      <Text>CustomButton</Text>
-    </View>
+    <TouchableOpacity
+      style={styles.button}
+      onPress={onPress}
+    >
+      <CustomText style={styles.buttonText}>{title}</CustomText>
+    </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({})
+
+export default CustomButton

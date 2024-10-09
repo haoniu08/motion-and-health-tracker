@@ -1,10 +1,31 @@
 import React from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, TextInput, Pressable, View } from 'react-native';
 
-const CustomTextInput = ( style, ...props ) => {
+const CustomTextInput = ({ 
+  isPressable = false,
+  onPress,
+  style, 
+  ...props  
+}) => {
+  if (isPressable) {
+    return (
+      <Pressable onPress={onPress}>
+        <View pointerEvents="none">
+          <TextInput 
+            style={[styles.textInput, style]} 
+            {...props} 
+          />
+        </View>
+      </Pressable>
+    );
+  }
+
   return (
-    <TextInput style={[styles.textInput, style]} {...props} />
-  )
+    <TextInput 
+      style={[styles.textInput, style]} 
+      {...props} 
+    />
+  );
 }
 
 const styles = StyleSheet.create({

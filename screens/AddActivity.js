@@ -1,19 +1,31 @@
 import { StyleSheet, View } from 'react-native'
 import {React, useState }from 'react'
 import DropDownPicker from 'react-native-dropdown-picker'
+import DateTimePicker from '@react-native-community/datetimepicker'
 import CustomButton from '../components/CustomButton'
 import CustomText from '../components/CustomText'
 import CustomTextInput from '../components/CustomTextInput'
 
-function handleSelectActivity(item) {
-  setActivityType(item.value);
-} 
-
-function handleDurationChange(duration) {
-  setDuration(duration);
-}
-
 export default function AddActivity() {
+
+  function handleSelectActivity(item) {
+    setActivityType(item.value);
+  } 
+  
+  function handleDurationChange(duration) {
+    setDuration(duration);
+  }
+  
+  function handleDateChange(event, selectedDate) {
+    if (event.type === 'set') {
+      setDate(selectedDate);
+    }
+    setShowPicker(false);
+  }
+
+  function showDatePicker() {
+    setShowPicker(true);
+  }
 
   const [activityType, setActivityType] = useState('');
   const [open, setOpen] = useState(false);
@@ -28,6 +40,9 @@ export default function AddActivity() {
   ]);
 
   const [duration, setDuration] = useState('');
+  const [date, setDate] = useState(null);
+  const [showPicker, setShowPicker] = useState(false);
+  const formattedDate = date ? date.toDateString() : '';
 
   return (
     <View style={styles.container}>
@@ -51,6 +66,22 @@ export default function AddActivity() {
         keyboardType="numeric"
         onChangeText={handleDurationChange} 
       />
+
+      <CustomText style={styles.title}>Date*</CustomText>
+      <CustomTextInput
+        style={styles.input}
+        value={formattedDate}
+        isPressable={true}
+        onPress={showDatePicker}
+      />
+      {showPicker && (
+        <DateTimePicker
+          value={date || new Date()}
+          mode="date"
+          display="inline"
+          onChange={handleDateChange}
+        />
+      )}
 
     </View>
   )

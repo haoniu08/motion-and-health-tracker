@@ -1,11 +1,12 @@
 import { StyleSheet, View, Alert } from 'react-native'
-import {React, useState }from 'react'
+import {React, useState, useContext }from 'react'
 import { useNavigation } from '@react-navigation/native'
 import DropDownPicker from 'react-native-dropdown-picker'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import CustomButton from '../components/CustomButton'
 import CustomText from '../components/CustomText'
 import CustomTextInput from '../components/CustomTextInput'
+import DataContext from '../components/context/DataContext'
 
 export default function AddActivity() {
 

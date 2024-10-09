@@ -1,5 +1,6 @@
 import { StyleSheet, View } from 'react-native'
 import {React, useState }from 'react'
+import { useNavigation } from '@react-navigation/native'
 import DropDownPicker from 'react-native-dropdown-picker'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import CustomButton from '../components/CustomButton'
@@ -27,6 +28,10 @@ export default function AddActivity() {
     setShowPicker(true);
   }
 
+  function handleCancel() {
+    navigation.goBack();
+  } 
+
   const [activityType, setActivityType] = useState('');
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
@@ -43,6 +48,8 @@ export default function AddActivity() {
   const [date, setDate] = useState(null);
   const [showPicker, setShowPicker] = useState(false);
   const formattedDate = date ? date.toDateString() : '';
+
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -82,6 +89,11 @@ export default function AddActivity() {
           onChange={handleDateChange}
         />
       )}
+
+      <View style={styles.buttonContainer}>
+        <CustomButton title="Cancel" onPress={handleCancel} />
+        <CustomButton title="Save" onPress={() => {}} />  
+      </View>
 
     </View>
   )

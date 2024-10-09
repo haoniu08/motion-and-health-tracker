@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Alert } from 'react-native'
 import {React, useState }from 'react'
 import { useNavigation } from '@react-navigation/native'
 import DropDownPicker from 'react-native-dropdown-picker'
@@ -28,9 +28,36 @@ export default function AddActivity() {
     setShowPicker(true);
   }
 
-  function handleCancel() {
+  function handleCancelPress() {
     navigation.goBack();
   } 
+
+  function showAlert(message) {
+    Alert.alert('Invalid Input', message, [{ text: 'OK' }], { cancelable: true });
+  }
+
+  function validateInput() {
+    if (!activityType) {
+      showAlert('Please select an activity');
+      return false;
+    }
+    if (!duration || isNaN(duration) || duration <= 0 || !/^\d+$/.test(duration)) {
+      showAlert('Please enter a valid duration (positive number)');
+      return false;
+    }
+    if (!date) {
+      showAlert('Please select a date');
+      return false;
+    }
+    return true;
+  }
+
+  function handleSavePress() {
+    if (validateInput()) {
+      // Save the activity to the database
+      navigation.goBack();
+    }
+  }
 
   const [activityType, setActivityType] = useState('');
   const [open, setOpen] = useState(false);
@@ -91,8 +118,8 @@ export default function AddActivity() {
       )}
 
       <View style={styles.buttonContainer}>
-        <CustomButton title="Cancel" onPress={handleCancel} />
-        <CustomButton title="Save" onPress={() => {}} />  
+        <CustomButton title="Cancel" onPress={handleCancelPress} />
+        <CustomButton title="Save" onPress={handleSavePress} />  
       </View>
 
     </View>

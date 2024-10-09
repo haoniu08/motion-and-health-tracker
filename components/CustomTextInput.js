@@ -7,6 +7,12 @@ const CustomTextInput = ( style, ...props ) => {
   )
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  textInput: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+  }
+});
 
 export default CustomTextInput;

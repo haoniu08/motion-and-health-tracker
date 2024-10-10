@@ -36,11 +36,23 @@ export default function AddDiet({ navigation }) {
   }
 
   function handleCancelPress () {
-    navigation.goBack();
+    navigation.goBack(); 
   }
 
   function validateInput () {
-    return true
+    if (!dietType) {
+      showAlert('Please fill in the description');
+      return false
+    }
+    if (!calories || isNaN(calories) || calories <= 0 || !/^\d+$/.test(calories)) {
+      showAlert('Please enter a valid calories amount (positive number)');
+      return false;
+    }
+    if (!date) {
+      showAlert('Please select a date');
+      return false;
+    }
+    return true;
   }
   
   function handleSavePress () {

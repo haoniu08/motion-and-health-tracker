@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Button } from 'react-native'
-import React from 'react'
+import { React, useEffect } from 'react'
+import ItemList from '../components/ItemList';
 
 export default function Diet( { navigation }) {
 
@@ -7,18 +8,20 @@ export default function Diet( { navigation }) {
     navigation.push('AddDiet')
   }
 
-  navigation.setOptions({
-    headerRight: () => (
-      <Button 
-        title="Add" 
-        onPress={handleAddPress}
-      />
-    ),
-  });
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button 
+          title="Add" 
+          onPress={handleAddPress}
+        />
+      ),
+    });
+  }, [navigation]);
 
   return (
     <View>
-      <Text>Diet</Text>
+      <ItemList type='diet'/>
     </View>
   )
 }

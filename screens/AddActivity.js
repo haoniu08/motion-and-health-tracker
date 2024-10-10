@@ -6,8 +6,11 @@ import CustomButton from '../components/CustomButton'
 import CustomText from '../components/CustomText'
 import CustomTextInput from '../components/CustomTextInput'
 import { DataContext } from '../context/DataContext'
+import { useTheme } from '../context/ThemeContext'
 
 export default function AddActivity({ navigation }) {
+
+  const { currentTheme } = useTheme();
 
   // access the addActivity function from the DataContext
   const { addActivity } = useContext(DataContext);
@@ -90,7 +93,7 @@ export default function AddActivity({ navigation }) {
   const formattedDate = date ? date.toDateString() : '';
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: currentTheme.backgroundColor}]}>
       <CustomText style={styles.title}>Activity *</CustomText>
       <DropDownPicker
         open={open}

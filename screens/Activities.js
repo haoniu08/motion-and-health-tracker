@@ -1,9 +1,12 @@
 import { StyleSheet, Text, View, Button } from 'react-native'
 import { React, useEffect } from 'react'
 import ItemList from '../components/ItemList'
+import { useTheme } from '../context/ThemeContext'
 
 export default function Activities( { navigation }) {
 
+  const { currentTheme } = useTheme();
+  
   function handleAddPress() {
     navigation.navigate('AddActivity')
   }
@@ -20,7 +23,10 @@ export default function Activities( { navigation }) {
   }, [navigation]);
 
   return (
-    <ItemList type="activities"/>
+    <View style={[styles.container, {backgroundColor: currentTheme.backgroundColor}]}>
+      <ItemList type="activities"/>
+    </View>
+    
   )
 }
 

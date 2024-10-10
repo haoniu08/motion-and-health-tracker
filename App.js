@@ -1,27 +1,27 @@
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import styling from './utils/StylingUtils';
 import Activities from './screens/Activities';
 import Diet from './screens/Diet';
-import Settings  from './screens/Settings';
+import Settings from './screens/Settings';
 import AddActivity from './screens/AddActivity';
 import AddDiet from './screens/AddDiet';
 import DataProvider from './context/DataContext';
-import { ThemeProvider } from './context/ThemeContext';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
 
 const BottomTab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-function BottomTabs () {
+function BottomTabs() {
+  const { currentTheme } = useTheme();
   return (
     <BottomTab.Navigator
-      screenOptions = {({route}) => ({
+      screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-
           if (route.name === 'Activities') {
             iconName = focused ? "walk" : "walk-outline";
           } else if (route.name === 'Diet') {
@@ -29,49 +29,70 @@ function BottomTabs () {
           } else if (route.name === 'Settings') {
             iconName = focused ? 'settings' : 'settings-outline';
           }
-
           return <Ionicons name={iconName} size={size} color={color} />;
         },
+        tabBarStyle: { backgroundColor: currentTheme.backgroundColor },
+        tabBarActiveTintColor: currentTheme.color,
+        tabBarInactiveTintColor: currentTheme.color,
       })}
     >
       <BottomTab.Screen name="Activities" component={Activities} />
       <BottomTab.Screen name="Diet" component={Diet} />
       <BottomTab.Screen name="Settings" component={Settings} />
     </BottomTab.Navigator>
-  )
+  );
+}
+
+function ThemedApp() {
+  const { currentTheme } = useTheme();
+  return (
+    <NavigationContainer
+      // theme={{
+      //   colors: {
+      //     background: currentTheme.backgroundColor,
+      //     text: currentTheme.color,
+      //     primary: currentTheme.buttonColor,
+      //     card: currentTheme.backgroundColor,
+      //     border: currentTheme.color,
+      //   },
+      // }}
+    >
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: { backgroundColor: currentTheme.headerColor },
+          headerTintColor: currentTheme.color,
+        }}
+      >
+        <Stack.Screen name="BottomTabs" component={BottomTabs} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="AddActivity"
+          component={AddActivity}
+          options={{
+            title: "Add an Activity",
+            headerBackTitle: "Activities",
+          }}
+        />
+        <Stack.Screen
+          name="AddDiet"
+          component={AddDiet}
+          options={{
+            title: "Add A Diet Entry",
+            headerBackTitle: "Diet",
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
 export default function App() {
   return (
     <ThemeProvider>
       <DataProvider>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name="BottomTabs" component={BottomTabs} options={{headerShown: false}}/>
-            <Stack.Screen 
-              name="AddActivity" 
-              component={AddActivity} 
-              options={{
-                title: "Add an Activity",
-                headerBackTitle: "Activities",
-              }}
-              
-              />
-            <Stack.Screen 
-              name="AddDiet" 
-              component={AddDiet} 
-              options={{
-                title: "Add A Diet Entry",
-                headerBackTitle: "Diet",
-              }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
+        <ThemedApp />
       </DataProvider>
-    </ThemeProvider> 
-    
+    </ThemeProvider>
   );
 }
 
-const styles = StyleSheet.create({
-});
+const styles = StyleSheet.create({});

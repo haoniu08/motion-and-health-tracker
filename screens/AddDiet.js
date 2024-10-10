@@ -6,9 +6,9 @@ import CustomText from '../components/CustomText'
 import CustomTextInput from '../components/CustomTextInput'
 import { DataContext } from '../context/DataContext'
 
-export default function AddDiet( {navigation} ) {
+export default function AddDiet({ navigation }) {
 
-  const { addDiet } = useContext(DataContext);
+  const { addDietEntry } = useContext(DataContext);
 
   const [dietType, setDietType] = useState("");
   const [calories, setCalories] = useState("");
@@ -23,16 +23,58 @@ export default function AddDiet( {navigation} ) {
     setShowPicker(false);
   }
 
-  function showDatePicker() {
+  function handleDietEntry (dietType) {
+    setDietType(dietType);
+  } 
+  
+  function handleCaloriesChange (calories) {
+    setCalories(calories);
+  }
+
+  function showDatePicker () {
     setShowPicker(true);
+  }
+
+  function handleCancelPress () {
+    navigation.goBack();
+  }
+
+  function validateInput () {
+    return true
+  }
+  
+  function handleSavePress () {
+    if (validateInput()) {
+      const adjustedDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+      const newDietEntry = {
+        type: dietType,
+        calories: parseInt(calories),
+        date: adjustedDate.toString(),
+      }
+      addDietEntry(newDietEntry);
+      console.log('Diet added:', newDietEntry);
+
+      navigation.goBack();
+    }
+  }
+
+  function showAlert (message) {
+    Alert.alert('Invalid Input', message, [{ text: 'OK' }], { cancelable: true });
   }
 
   return (
     <View style={styles.container}>
       <CustomText style={styles.title}>Description *</CustomText>
-      <CustomTextInput></CustomTextInput>
+      <CustomTextInput
+        onChangeText={handleDietEntry}
+      />
       <CustomText style={styles.title}>Calories *</CustomText>
-      <CustomTextInput></CustomTextInput>
+      <CustomTextInput
+        style={styles.input}
+        placeholder="Enter duration"
+        keyboardType="numeric"
+        onChangeText={handleCaloriesChange}
+      />
       <CustomText style={styles.title}>Date *</CustomText>
       <CustomTextInput
         style={styles.input}
@@ -50,6 +92,11 @@ export default function AddDiet( {navigation} ) {
         />
         )
       }
+
+      <View style={styles.buttonContainer}>
+        <CustomButton title="Cancel" onPress={handleCancelPress} />
+        <CustomButton title="Save" onPress={handleSavePress} />  
+      </View>
       
     </View>
   )

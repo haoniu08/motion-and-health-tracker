@@ -25,7 +25,7 @@ export default function ItemList({ type }) {
 
   const renderItem = ({ item }) => (
     <View>
-      <CustomText>{type === 'activities' ? item.type : item.description}</CustomText>
+      <CustomText>{item.type}</CustomText>
       {isSpecialEntry(item) && (
           <AntDesign name="warning" size={15} color="red" style={styles.icon} />
       )}

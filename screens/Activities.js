@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Button } from 'react-native'
 import { React, useEffect } from 'react'
+import ItemList from '../components/ItemList'
 
 export default function Activities( { navigation }) {
 
@@ -19,9 +20,7 @@ export default function Activities( { navigation }) {
   }, [navigation]);
 
   return (
-    <View>
-      <Text>Activities</Text>
-    </View>
+    <ItemList type="activities"/>
   )
 }
 

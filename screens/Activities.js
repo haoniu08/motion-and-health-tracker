@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Button } from 'react-native'
-import { React, useState } from 'react'
+import { React, useEffect } from 'react'
 
 export default function Activities( { navigation }) {
 
@@ -7,14 +7,16 @@ export default function Activities( { navigation }) {
     navigation.navigate('AddActivity')
   }
 
-  navigation.setOptions({
-    headerRight: () => (
-      <Button 
-        title="Add" 
-        onPress={handleAddPress}
-      />
-    ),
-  });
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button 
+          title="Add" 
+          onPress={handleAddPress}
+        />
+      ),
+    });
+  }, [navigation]);
 
   return (
     <View>

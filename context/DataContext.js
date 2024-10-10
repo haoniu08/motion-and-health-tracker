@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native'
 import React, {createContext, useState, useContext} from 'react'
 
-const DataContext = createContext();
+export const DataContext = createContext();
 
 export const useData = () => useContext(DataContext);
 
 export default function DataProvider({ children }) {
+
     const [activities, setActivities] = useState([]);
     const [dietEntries, setDietEntries] = useState([]);
 

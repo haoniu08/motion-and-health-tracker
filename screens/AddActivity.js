@@ -1,14 +1,16 @@
 import { StyleSheet, View, Alert } from 'react-native'
 import {React, useState, useContext }from 'react'
-import { useNavigation } from '@react-navigation/native'
 import DropDownPicker from 'react-native-dropdown-picker'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import CustomButton from '../components/CustomButton'
 import CustomText from '../components/CustomText'
 import CustomTextInput from '../components/CustomTextInput'
-import DataContext from '../components/context/DataContext'
+import { DataContext } from '../context/DataContext'
 
-export default function AddActivity() {
+export default function AddActivity({ navigation }) {
+
+  // access the addActivity function from the DataContext
+  const { addActivity } = useContext(DataContext);
 
   function handleSelectActivity(item) {
     setActivityType(item.value);
@@ -55,7 +57,17 @@ export default function AddActivity() {
 
   function handleSavePress() {
     if (validateInput()) {
-      // Save the activity to the database
+      // fix time zone offset issue
+      const adjustedDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+      const newActivity = {
+        type: activityType,
+        duration: parseInt(duration),
+        date: adjustedDate.toISOString(),
+      }
+
+      addActivity(newActivity);
+      console.log('Activity added:', newActivity);
+
       navigation.goBack();
     }
   }
@@ -76,8 +88,6 @@ export default function AddActivity() {
   const [date, setDate] = useState(null);
   const [showPicker, setShowPicker] = useState(false);
   const formattedDate = date ? date.toDateString() : '';
-
-  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>

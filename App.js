@@ -10,6 +10,7 @@ import Settings  from './screens/Settings';
 import AddActivity from './screens/AddActivity';
 import AddDiet from './screens/AddDiet';
 import DataProvider from './context/DataContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 const BottomTab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -42,30 +43,33 @@ function BottomTabs () {
 
 export default function App() {
   return (
-    <DataProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="BottomTabs" component={BottomTabs} options={{headerShown: false}}/>
-          <Stack.Screen 
-            name="AddActivity" 
-            component={AddActivity} 
-            options={{
-              title: "Add an Activity",
-              headerBackTitle: "Activities",
-            }}
-            
+    <ThemeProvider>
+      <DataProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name="BottomTabs" component={BottomTabs} options={{headerShown: false}}/>
+            <Stack.Screen 
+              name="AddActivity" 
+              component={AddActivity} 
+              options={{
+                title: "Add an Activity",
+                headerBackTitle: "Activities",
+              }}
+              
+              />
+            <Stack.Screen 
+              name="AddDiet" 
+              component={AddDiet} 
+              options={{
+                title: "Add A Diet Entry",
+                headerBackTitle: "Diet",
+              }}
             />
-          <Stack.Screen 
-            name="AddDiet" 
-            component={AddDiet} 
-            options={{
-              title: "Add A Diet Entry",
-              headerBackTitle: "Diet",
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </DataProvider>
+          </Stack.Navigator>
+        </NavigationContainer>
+      </DataProvider>
+    </ThemeProvider> 
+    
   );
 }
 

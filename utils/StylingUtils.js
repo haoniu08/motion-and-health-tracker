@@ -16,6 +16,16 @@ const colors = {
     lightGray: '#D3D3D3',
     purple: '#9400D3',
     darkOrchid: '#9932CC',
+    rebeccaPurple: '#663399',
+    mediumPurple: '#9370DB',
+    violet: '#8A2BE2',
+    darkSlateBlue: '#483D8B',
+    darkBlue: '#00008B',
+    indigo: '#4B0082',
+    plum: '#DDA0DD',
+    lavender: '#E6E6FA',
+    thistle: '#D8BFD8',
+    mediumOrchid: '#BA55D3',
 }
 
 const margins = {
@@ -32,7 +42,7 @@ const paddings = {
     extraLargePadding: 20,
 }
 
-const boderRadius = {
+const borderRadius = {
     smallBorderRadius: 5,
     mediumBorderRadius: 10,
     largeBorderRadius: 15,
@@ -61,6 +71,7 @@ const borderWidth = {
 }
 
 const alignment = {
+    absolute: 'absolute',
     left: 'left',
     right: 'right',
     center: 'center',
@@ -71,7 +82,7 @@ const flexAlign = {
     start: 'flex-start',
     end: 'flex-end',
     center: 'center',
-    spaceBetween: 'space-between',
+    spaceBetween: 'spaceBetween',
     spaceAround: 'space-around',
 }
 
@@ -92,7 +103,7 @@ export default {
     colors,
     margins,
     paddings,
-    boderRadius,
+    borderRadius,
     font,
     fontSize,
     borderWidth,

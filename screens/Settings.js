@@ -19,7 +19,7 @@ export default function Settings({ navigation }) {
       <CustomButton 
         onPress={toggleTheme}
         title="Toggle Theme"
-        style={{ backgroundColor: currentTheme.buttonColor }}
+        style={styles.button}
       />
       <CustomText style={{ color: currentTheme.color }}>
       </CustomText>
@@ -32,5 +32,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  button: {
+    borderWidth: 1,
+    borderColor: 'black',
   },
 });

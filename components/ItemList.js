@@ -25,7 +25,7 @@ export default function ItemList({ type }) {
 
   const renderItem = ({ item }) => (
     <View>
-      <CustomText>{item.type}</CustomText>
+      <CustomText style={styles.title}>{item.type}</CustomText>
       {isSpecialEntry(item) && (
           <AntDesign name="warning" size={15} color="red" style={styles.icon} />
       )}
@@ -44,4 +44,9 @@ export default function ItemList({ type }) {
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 66,
+    fontWeight: 'bold',
+  },
+})

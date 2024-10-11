@@ -46,17 +46,7 @@ function BottomTabs() {
 function ThemedApp() {
   const { currentTheme } = useTheme();
   return (
-    <NavigationContainer
-      // theme={{
-      //   colors: {
-      //     background: currentTheme.backgroundColor,
-      //     text: currentTheme.color,
-      //     primary: currentTheme.buttonColor,
-      //     card: currentTheme.backgroundColor,
-      //     border: currentTheme.color,
-      //   },
-      // }}
-    >
+    <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
           headerStyle: { backgroundColor: currentTheme.headerColor },

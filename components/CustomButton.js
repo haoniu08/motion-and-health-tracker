@@ -6,10 +6,11 @@ import React from 'react'
 const CustomButton = ({
   onPress,
   title,
+  customeStyle,
 }) => {
   return (
     <TouchableOpacity
-      style={styles.button}
+      style={[styles.button, customeStyle]}
       onPress={onPress}
     >
       <CustomText style={styles.buttonText}>{title}</CustomText>
@@ -20,7 +21,7 @@ const CustomButton = ({
 const styles = StyleSheet.create({
   buttonText: {
     color: styling.colors.white,
-    fontSize: 16,
+    fontSize: styling.fontSize.largeFontSize,
   },
 })
 

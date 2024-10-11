@@ -6,19 +6,15 @@ const ThemeContext = createContext();
 export const useTheme = () => useContext(ThemeContext);
 
 const lightTheme = {
-    headerColor: styling.colors.skyBlue,
-    backgroundColor: styling.colors.lightGray,
-    color: styling.colors.black,
-    buttonColor: styling.colors.black,
-    buttonTextColor: styling.colors.black,
+    headerColor: styling.colors.indigo,
+    backgroundColor: styling.colors.mediumPurple,
+    color: styling.colors.white,
 }
 
 const darkTheme = {
-    headerColor: styling.colors.skyBlue,
+    headerColor: styling.colors.rebeccaPurple,
     backgroundColor: styling.colors.slateBlue,
-    color: styling.colors.black,
-    buttonColor: styling.colors.black,
-    buttonTextColor: styling.colors.black,
+    color: styling.colors.white,
 }
 
 export const ThemeProvider = ({ children }) => {

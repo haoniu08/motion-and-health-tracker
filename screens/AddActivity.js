@@ -7,6 +7,7 @@ import CustomText from '../components/CustomText'
 import CustomTextInput from '../components/CustomTextInput'
 import { DataContext } from '../context/DataContext'
 import { useTheme } from '../context/ThemeContext'
+import styling from '../utils/StylingUtils'
 
 export default function AddActivity({ navigation }) {
 
@@ -99,7 +100,7 @@ export default function AddActivity({ navigation }) {
 
   return (
     <View style={[styles.container, {backgroundColor: currentTheme.backgroundColor}]}>
-      <CustomText style={styles.title}>Activity *</CustomText>
+      <CustomText style={styles.topTitle}>Activity *</CustomText>
       <DropDownPicker
         open={open}
         value={activityType}
@@ -108,6 +109,7 @@ export default function AddActivity({ navigation }) {
         setValue={setActivityType}
         setItems={setItems}
         style={styles.dropDown}
+        dropDownContainerStyle={styles.dropDownContainer}
         onSelectedItem={handleSelectActivity}
         placeholder="Select an activity"
       />
@@ -115,7 +117,6 @@ export default function AddActivity({ navigation }) {
       <CustomText style={styles.title}>Duration (min) *</CustomText>
       <CustomTextInput
         style={styles.input}
-        placeholder="Enter duration"
         keyboardType="numeric"
         onChangeText={handleDurationChange} 
       />
@@ -129,6 +130,7 @@ export default function AddActivity({ navigation }) {
       />
       {showPicker && (
         <DateTimePicker
+          style={styles.input}
           value={date || new Date()}
           mode="date"
           display="inline"
@@ -137,12 +139,62 @@ export default function AddActivity({ navigation }) {
       )}
 
       <View style={styles.buttonContainer}>
-        <CustomButton title="Cancel" onPress={handleCancelPress} />
-        <CustomButton title="Save" onPress={handleSavePress} />  
+        <CustomButton 
+          title="Cancel" 
+          onPress={handleCancelPress} 
+          customeStyle={styles.cancelButton}
+        />
+        <CustomButton 
+          title="Save" 
+          onPress={handleSavePress} 
+          customeStyle={styles.saveButton}
+        />  
       </View>
 
     </View>
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  dropDown: {
+    alignSelf: styling.alignment.center,
+    width: '90%',
+    margin: styling.margins.mediumMargin,
+  },
+  dropDownContainer: {
+    alignSelf: styling.alignment.center,
+    width: '90%',  // 90% width for the dropdown list
+    backgroundColor: styling.colors.white,  // White background for the dropdown items
+  },
+  input: {
+    borderRadius: styling.borderRadius.largeRadius,
+    backgroundColor: styling.colors.white,
+    alignSelf: styling.alignment.center,
+    width: '90%',
+    margin: styling.margins.mediumMargin,
+  },
+  topTitle: {
+    marginTop: 70,
+    marginLeft: styling.margins.largeMargin,
+    fontSize: styling.fontSize.largeFontSize,
+  },
+  title : {
+    marginLeft: styling.margins.largeMargin,
+    marginTop: styling.margins.largeMargin,
+    fontSize: styling.fontSize.largeFontSize,
+  },
+  buttonContainer:{
+    position: styling.alignment.absolute,
+    bottom: 70,
+    left: 0,
+    right: 0,
+    justifyContent: styling.alignment.center,
+    flexDirection: styling.flexDirection.row,
+  },
+  cancelButton: {
+    marginRight: 2 * styling.margins.extraLargeMargin,
+  },
+})

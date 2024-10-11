@@ -108,10 +108,11 @@ export default function AddDiet({ navigation }) {
       {
         showPicker && (
           <DateTimePicker
-          value={date || new Date()}
-          mode="date"
-          display="inline"
-          onChange={handleDateChange}
+            style={styles.input}
+            value={date || new Date()}
+            mode="date"
+            display="inline"
+            onChange={handleDateChange}
         />
         )
       }
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
     backgroundColor: styling.colors.white,
     alignSelf: styling.alignment.center,
     width: '90%',
-    height: 130,
+    height: 100,
     margin: styling.margins.mediumMargin,
   },
   input: {
@@ -153,7 +154,7 @@ const styles = StyleSheet.create({
     margin: styling.margins.mediumMargin,
   },
   topTitle: {
-    marginTop: 70,
+    marginTop: 40,
     marginLeft: styling.margins.largeMargin,
     fontSize: styling.fontSize.largeFontSize,
   },
@@ -164,7 +165,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer:{
     position: styling.alignment.absolute,
-    bottom: 70,
+    bottom: 60,
     left: 0,
     right: 0,
     justifyContent: styling.alignment.center,

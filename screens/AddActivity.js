@@ -84,13 +84,13 @@ export default function AddActivity({ navigation }) {
   const [activityType, setActivityType] = useState('');
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
-    { label: 'Walking', value: 'walking' },
-    { label: 'Running', value: 'running' },
-    { label: 'Swimming', value: 'swimming' },
-    { label: 'Weights', value: 'weights' },
-    { label: 'Yoga', value: 'yoga' },
-    { label: 'Cycling', value: 'cycling' },
-    { label: 'Hiking', value: 'hiking' },
+    { label: 'Walking', value: 'Walking' },
+    { label: 'Running', value: 'Running' },
+    { label: 'Swimming', value: 'Swimming' },
+    { label: 'Weights', value: 'Weights' },
+    { label: 'Yoga', value: 'Yoga' },
+    { label: 'Cycling', value: 'Cycling' },
+    { label: 'Hiking', value: 'Hiking' },
   ]);
 
   const [duration, setDuration] = useState('');
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer:{
     position: styling.alignment.absolute,
-    bottom: 70,
+    bottom: 60,
     left: 0,
     right: 0,
     justifyContent: styling.alignment.center,

@@ -43,7 +43,7 @@ const paddings = {
 }
 
 const borderRadius = {
-    smallBorderRadius: 5,
+    smallBorderRadius: 7,
     mediumBorderRadius: 10,
     largeBorderRadius: 15,
     extraLargeBorderRadius: 20,

@@ -6,6 +6,7 @@ import CustomText from '../components/CustomText'
 import CustomTextInput from '../components/CustomTextInput'
 import { DataContext } from '../context/DataContext'
 import { useTheme } from '../context/ThemeContext'
+import styling from '../utils/StylingUtils'
 
 export default function AddDiet({ navigation }) {
 
@@ -84,9 +85,11 @@ export default function AddDiet({ navigation }) {
 
   return (
     <View style={[styles.container, {backgroundColor: currentTheme.backgroundColor}]}>
-      <CustomText style={styles.title}>Description *</CustomText>
+      <CustomText style={styles.topTitle}>Description *</CustomText>
       <CustomTextInput
+        style={styles.topInput}
         onChangeText={handleDietEntry}
+        multiline={true}
       />
       <CustomText style={styles.title}>Calories *</CustomText>
       <CustomTextInput
@@ -113,9 +116,17 @@ export default function AddDiet({ navigation }) {
         )
       }
 
-      <View style={styles.buttonContainer}>
-        <CustomButton title="Cancel" onPress={handleCancelPress} />
-        <CustomButton title="Save" onPress={handleSavePress} />  
+<View style={styles.buttonContainer}>
+        <CustomButton 
+          title="Cancel" 
+          onPress={handleCancelPress} 
+          customeStyle={styles.cancelButton}
+        />
+        <CustomButton 
+          title="Save" 
+          onPress={handleSavePress} 
+          customeStyle={styles.saveButton}
+        />  
       </View>
       
     </View>
@@ -125,5 +136,41 @@ export default function AddDiet({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  topInput: {
+    borderRadius: styling.borderRadius.smallBorderRadius,
+    backgroundColor: styling.colors.white,
+    alignSelf: styling.alignment.center,
+    width: '90%',
+    height: 130,
+    margin: styling.margins.mediumMargin,
+  },
+  input: {
+    borderRadius: styling.borderRadius.smallBorderRadius,
+    backgroundColor: styling.colors.white,
+    alignSelf: styling.alignment.center,
+    width: '90%',
+    margin: styling.margins.mediumMargin,
+  },
+  topTitle: {
+    marginTop: 70,
+    marginLeft: styling.margins.largeMargin,
+    fontSize: styling.fontSize.largeFontSize,
+  },
+  title : {
+    marginLeft: styling.margins.largeMargin,
+    marginTop: styling.margins.largeMargin,
+    fontSize: styling.fontSize.largeFontSize,
+  },
+  buttonContainer:{
+    position: styling.alignment.absolute,
+    bottom: 70,
+    left: 0,
+    right: 0,
+    justifyContent: styling.alignment.center,
+    flexDirection: styling.flexDirection.row,
+  },
+  cancelButton: {
+    marginRight: 2 * styling.margins.extraLargeMargin,
   },
 })

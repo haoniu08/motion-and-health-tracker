@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     backgroundColor: styling.colors.white,  // White background for the dropdown items
   },
   input: {
-    borderRadius: styling.borderRadius.largeRadius,
+    borderRadius: styling.borderRadius.smallBorderRadius,
     backgroundColor: styling.colors.white,
     alignSelf: styling.alignment.center,
     width: '90%',

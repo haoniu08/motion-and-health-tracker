@@ -30,10 +30,10 @@ const CustomTextInput = ({
 
 const styles = StyleSheet.create({
   textInput: {
-    height: 40,
-    margin: 12,
+    height: 50,
+    margin: 10,
     borderWidth: 1,
-  }
+  },
 });
 
 export default CustomTextInput;

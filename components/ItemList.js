@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
     fontSize: styling.fontSize.mediumFontSize + 2,
   },
   amount: {
-    borderRadius: styling.borderRadius.smallBorderRadius,
     padding: styling.paddings.smallPadding,
     color: styling.colors.indigo,
     backgroundColor: styling.colors.white,

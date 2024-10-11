@@ -31,7 +31,12 @@ export default function AddActivity({ navigation }) {
   }
 
   function showDatePicker() {
-    setShowPicker(true);
+    if (showPicker) {
+      setDate(new Date());
+      setShowPicker(false);
+    } else {
+      setShowPicker(true);
+    }
   }
 
   function handleCancelPress() {

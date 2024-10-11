@@ -5,8 +5,11 @@ import CustomButton from '../components/CustomButton'
 import CustomText from '../components/CustomText'
 import CustomTextInput from '../components/CustomTextInput'
 import { DataContext } from '../context/DataContext'
+import { useTheme } from '../context/ThemeContext'
 
 export default function AddDiet({ navigation }) {
+
+  const { currentTheme } = useTheme();
 
   const { addDietEntry } = useContext(DataContext);
 
@@ -31,8 +34,13 @@ export default function AddDiet({ navigation }) {
     setCalories(calories);
   }
 
-  function showDatePicker () {
-    setShowPicker(true);
+  function showDatePicker() {
+    if (showPicker) {
+      setDate(new Date());
+      setShowPicker(false);
+    } else {
+      setShowPicker(true);
+    }
   }
 
   function handleCancelPress () {
@@ -75,7 +83,7 @@ export default function AddDiet({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: currentTheme.backgroundColor}]}>
       <CustomText style={styles.title}>Description *</CustomText>
       <CustomTextInput
         onChangeText={handleDietEntry}

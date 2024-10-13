@@ -20,7 +20,6 @@ export default function Diet({ navigation }) {
         <Button 
           title="Add" 
           onPress={handleAddPress}
-          color={currentTheme.color} // Ensure button uses the current theme
         />
       ),
     });

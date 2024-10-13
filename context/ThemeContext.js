@@ -9,12 +9,14 @@ const lightTheme = {
     headerColor: styling.colors.indigo,
     backgroundColor: styling.colors.mediumPurple,
     color: styling.colors.white,
+    toggleColor: styling.colors.black,
 }
 
 const darkTheme = {
     headerColor: styling.colors.rebeccaPurple,
     backgroundColor: styling.colors.slateBlue,
     color: styling.colors.white,
+    toggleColor: styling.colors.white,
 }
 
 export const ThemeProvider = ({ children }) => {

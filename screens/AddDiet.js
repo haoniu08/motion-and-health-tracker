@@ -90,11 +90,11 @@ export default function AddDiet({ navigation }) {
         style={styles.topInput}
         onChangeText={handleDietEntry}
         multiline={true}
+        textAlignVertical="top"
       />
       <CustomText style={styles.title}>Calories *</CustomText>
       <CustomTextInput
         style={styles.input}
-        placeholder="Enter duration"
         keyboardType="numeric"
         onChangeText={handleCaloriesChange}
       />
@@ -108,7 +108,6 @@ export default function AddDiet({ navigation }) {
       {
         showPicker && (
           <DateTimePicker
-            style={styles.input}
             value={date || new Date()}
             mode="date"
             display="inline"
@@ -139,6 +138,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   topInput: {
+    padding: styling.paddings.mediumPadding,
     borderRadius: styling.borderRadius.smallBorderRadius,
     backgroundColor: styling.colors.white,
     alignSelf: styling.alignment.center,
@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
     margin: styling.margins.mediumMargin,
   },
   input: {
+    padding: styling.paddings.mediumPadding,
     borderRadius: styling.borderRadius.smallBorderRadius,
     backgroundColor: styling.colors.white,
     alignSelf: styling.alignment.center,

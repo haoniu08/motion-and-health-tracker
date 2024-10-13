@@ -111,7 +111,6 @@ export default function AddActivity({ navigation }) {
         style={styles.dropDown}
         dropDownContainerStyle={styles.dropDownContainer}
         onSelectedItem={handleSelectActivity}
-        placeholder="Select an activity"
       />
 
       <CustomText style={styles.title}>Duration (min) *</CustomText>
@@ -130,7 +129,6 @@ export default function AddActivity({ navigation }) {
       />
       {showPicker && (
         <DateTimePicker
-          style={styles.input}
           value={date || new Date()}
           mode="date"
           display="inline"
@@ -170,6 +168,7 @@ const styles = StyleSheet.create({
     backgroundColor: styling.colors.white,  // White background for the dropdown items
   },
   input: {
+    padding: styling.paddings.mediumPadding,
     borderRadius: styling.borderRadius.smallBorderRadius,
     backgroundColor: styling.colors.white,
     alignSelf: styling.alignment.center,

@@ -20,7 +20,7 @@ export default function Activities({ navigation }) {
         <Button 
           title="Add" 
           onPress={handleAddPress}
-          color={currentTheme.buttonColor} // Ensure button uses the current theme
+          color={currentTheme.color} // Ensure button uses the current theme
         />
       ),
     });

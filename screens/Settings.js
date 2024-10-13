@@ -19,6 +19,7 @@ export default function Settings({ navigation }) {
       <CustomButton 
         onPress={toggleTheme}
         title="Toggle Theme"
+        textColor={currentTheme.toggleColor}
         style={styles.button}
       />
       <CustomText style={{ color: currentTheme.color }}>

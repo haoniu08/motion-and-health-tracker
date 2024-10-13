@@ -7,13 +7,14 @@ const CustomButton = ({
   onPress,
   title,
   customeStyle,
+  textColor,
 }) => {
   return (
     <TouchableOpacity
       style={[styles.button, customeStyle]}
       onPress={onPress}
     >
-      <CustomText style={styles.buttonText}>{title}</CustomText>
+      <CustomText style={[styles.buttonText, { color: textColor }]}>{title}</CustomText>
     </TouchableOpacity>
   )
 }

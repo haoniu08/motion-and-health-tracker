@@ -1,57 +1,40 @@
-import { StyleSheet, View, Alert } from 'react-native'
-import { React, useState, useContext } from 'react'
-import DateTimePicker from '@react-native-community/datetimepicker'
-import CustomButton from '../components/CustomButton'
-import CustomText from '../components/CustomText'
-import CustomTextInput from '../components/CustomTextInput'
-import { DataContext } from '../context/DataContext'
-import { useTheme } from '../context/ThemeContext'
-import styling from '../utils/StylingUtils'
+import { StyleSheet, View, Alert } from 'react-native';
+import { React, useState, useContext } from 'react';
+import CustomButton from '../components/CustomButton';
+import CustomText from '../components/CustomText';
+import CustomTextInput from '../components/CustomTextInput';
+import CustomDateTimePicker from '../components/CustomDateTimePicker'; // import new component
+import { DataContext } from '../context/DataContext';
+import { useTheme } from '../context/ThemeContext';
+import styling from '../utils/StylingUtils';
 
 export default function AddDiet({ navigation }) {
-
   const { currentTheme } = useTheme();
-
   const { addDietEntry } = useContext(DataContext);
 
-  const [dietType, setDietType] = useState("");
-  const [calories, setCalories] = useState("");
+  const [dietType, setDietType] = useState('');
+  const [calories, setCalories] = useState('');
   const [date, setDate] = useState(null);
-  const formattedDate = date ? date.toDateString() : '';
-  const [showPicker, setShowPicker] = useState(false);
 
-  function handleDateChange (event, selectedDate) {
-    if (event.type === 'set') {
-      setDate(selectedDate);
-    }
-    setShowPicker(false);
-  }
+  function handleSavePress() {
+    if (validateInput()) {
+      const adjustedDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+      const newDietEntry = {
+        type: dietType,
+        calories: parseInt(calories),
+        date: adjustedDate.toISOString(),
+      };
 
-  function handleDietEntry (dietType) {
-    setDietType(dietType);
-  } 
-  
-  function handleCaloriesChange (calories) {
-    setCalories(calories);
-  }
-
-  function showDatePicker() {
-    if (showPicker) {
-      setDate(new Date());
-      setShowPicker(false);
-    } else {
-      setShowPicker(true);
+      addDietEntry(newDietEntry);
+      console.log('Diet added:', newDietEntry);
+      navigation.goBack();
     }
   }
 
-  function handleCancelPress () {
-    navigation.goBack(); 
-  }
-
-  function validateInput () {
+  function validateInput() {
     if (!dietType) {
       showAlert('Please fill in the description');
-      return false
+      return false;
     }
     if (!calories || isNaN(calories) || calories <= 0 || !/^\d+$/.test(calories)) {
       showAlert('Please enter a valid calories amount (positive number)');
@@ -63,74 +46,41 @@ export default function AddDiet({ navigation }) {
     }
     return true;
   }
-  
-  function handleSavePress () {
-    if (validateInput()) {
-      const adjustedDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-      const newDietEntry = {
-        type: dietType,
-        calories: parseInt(calories),
-        date: adjustedDate.toString(),
-      }
-      addDietEntry(newDietEntry);
-      console.log('Diet added:', newDietEntry);
 
-      navigation.goBack();
-    }
-  }
-
-  function showAlert (message) {
+  function showAlert(message) {
     Alert.alert('Invalid Input', message, [{ text: 'OK' }], { cancelable: true });
   }
 
   return (
-    <View style={[styles.container, {backgroundColor: currentTheme.backgroundColor}]}>
+    <View style={[styles.container, { backgroundColor: currentTheme.backgroundColor }]}>
       <CustomText style={styles.topTitle}>Description *</CustomText>
       <CustomTextInput
         style={styles.topInput}
-        onChangeText={handleDietEntry}
+        onChangeText={setDietType}
         multiline={true}
         textAlignVertical="top"
       />
+
       <CustomText style={styles.title}>Calories *</CustomText>
       <CustomTextInput
         style={styles.input}
         keyboardType="numeric"
-        onChangeText={handleCaloriesChange}
+        onChangeText={setCalories}
       />
-      <CustomText style={styles.title}>Date *</CustomText>
-      <CustomTextInput
-        style={styles.input}
-        value={formattedDate}
-        isPressable={true}
-        onPress={showDatePicker}
-      />
-      {
-        showPicker && (
-          <DateTimePicker
-            value={date || new Date()}
-            mode="date"
-            display="inline"
-            onChange={handleDateChange}
-        />
-        )
-      }
 
-<View style={styles.buttonContainer}>
-        <CustomButton 
-          title="Cancel" 
-          onPress={handleCancelPress} 
-          customeStyle={styles.cancelButton}
-        />
-        <CustomButton 
-          title="Save" 
-          onPress={handleSavePress} 
-          customeStyle={styles.saveButton}
-        />  
+      <CustomText style={styles.title}>Date *</CustomText>
+      <CustomDateTimePicker
+        style={styles.input}
+        selectedDate={date}
+        onDateChange={setDate}
+      />
+
+      <View style={styles.buttonContainer}>
+        <CustomButton title="Cancel" onPress={() => navigation.goBack()} customeStyle={styles.cancelButton} />
+        <CustomButton title="Save" onPress={handleSavePress} customeStyle={styles.saveButton} />
       </View>
-      
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({

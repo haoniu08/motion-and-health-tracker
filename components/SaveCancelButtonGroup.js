@@ -23,7 +23,7 @@ const SaveCancelButtonGroup = ({ onCancelPress, onSavePress }) => {
 const styles = StyleSheet.create({
   buttonContainer: {
     position: styling.alignment.absolute,
-    bottom: 60,
+    bottom: 50,
     left: 0,
     right: 0,
     justifyContent: styling.alignment.center,

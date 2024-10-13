@@ -1,4 +1,4 @@
-import { StyleSheet, View, Alert } from 'react-native';
+import { StyleSheet, View, Alert, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { React, useState, useContext } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import CustomText from '../components/CustomText';
@@ -69,39 +69,41 @@ export default function AddActivity({ navigation }) {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: currentTheme.backgroundColor }]}>
-      <CustomText style={[styles.topTitle, { color: currentTheme.toggleColor }]}>Activity *</CustomText>
-      <DropDownPicker
-        open={open}
-        value={activityType}
-        items={items}
-        setOpen={setOpen}
-        setValue={setActivityType}
-        setItems={setItems}
-        style={styles.dropDown}
-        dropDownContainerStyle={styles.dropDownContainer}
-        placeholder=""
-      />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={[styles.container, { backgroundColor: currentTheme.backgroundColor }]}>
+        <CustomText style={[styles.topTitle, { color: currentTheme.toggleColor }]}>Activity *</CustomText>
+        <DropDownPicker
+          open={open}
+          value={activityType}
+          items={items}
+          setOpen={setOpen}
+          setValue={setActivityType}
+          setItems={setItems}
+          style={styles.dropDown}
+          dropDownContainerStyle={styles.dropDownContainer}
+          placeholder=""
+        />
 
-      <CustomText style={[styles.title, { color: currentTheme.toggleColor }]}>Duration (min) *</CustomText>
-      <CustomTextInput
-        style={styles.input}
-        keyboardType="numeric"
-        onChangeText={setDuration}
-      />
+        <CustomText style={[styles.title, { color: currentTheme.toggleColor }]}>Duration (min) *</CustomText>
+        <CustomTextInput
+          style={styles.input}
+          keyboardType="numeric"
+          onChangeText={setDuration}
+        />
 
-      <CustomText style={[styles.title, { color: currentTheme.toggleColor }]}>Date *</CustomText>
-      <CustomDateTimePicker
-        style={styles.input}
-        selectedDate={date}
-        onDateChange={setDate}
-      />
+        <CustomText style={[styles.title, { color: currentTheme.toggleColor }]}>Date *</CustomText>
+        <CustomDateTimePicker
+          style={styles.input}
+          selectedDate={date}
+          onDateChange={setDate}
+        />
 
-      <SaveCancelButtonGroup 
-        onCancelPress={handleCancelPress}
-        onSavePress={handleSavePress}
-      />
-    </View>
+        <SaveCancelButtonGroup 
+          onCancelPress={handleCancelPress}
+          onSavePress={handleSavePress}
+        />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -128,13 +130,13 @@ const styles = StyleSheet.create({
     margin: styling.margins.mediumMargin,
   },
   topTitle: {
-    marginTop: 70,
-    marginLeft: styling.margins.largeMargin,
-    fontSize: styling.fontSize.largeFontSize,
-  },
-  title: {
-    marginLeft: styling.margins.largeMargin,
     marginTop: styling.margins.largeMargin,
-    fontSize: styling.fontSize.largeFontSize,
+    marginLeft: styling.margins.largeMargin,
+    fontSize: styling.fontSize.mediumFontSize,
+  },
+  title : {
+    marginLeft: styling.margins.largeMargin,
+    marginTop: styling.margins.mediumMargin,
+    fontSize: styling.fontSize.mediumFontSize,
   },
 });

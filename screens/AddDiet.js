@@ -1,4 +1,4 @@
-import { StyleSheet, View, Alert } from 'react-native';
+import { StyleSheet, View, Alert, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { React, useState, useContext } from 'react';
 import CustomText from '../components/CustomText';
 import CustomTextInput from '../components/CustomTextInput';
@@ -56,34 +56,37 @@ export default function AddDiet({ navigation }) {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: currentTheme.backgroundColor }]}>
-      <CustomText style={[styles.topTitle, { color: currentTheme.toggleColor }]}>Description *</CustomText>
-      <CustomTextInput
-        style={styles.topInput}
-        onChangeText={setDietType}
-        multiline={true}
-        textAlignVertical="top"
-      />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-      <CustomText style={[styles.title, { color: currentTheme.toggleColor }]}>Calories *</CustomText>
-      <CustomTextInput
-        style={styles.input}
-        keyboardType="numeric"
-        onChangeText={setCalories}
-      />
+      <View style={[styles.container, { backgroundColor: currentTheme.backgroundColor }]}>
+        <CustomText style={[styles.topTitle, { color: currentTheme.toggleColor }]}>Description *</CustomText>
+        <CustomTextInput
+          style={styles.topInput}
+          onChangeText={setDietType}
+          multiline={true}
+          textAlignVertical="top"
+        />
 
-      <CustomText style={[styles.title, { color: currentTheme.toggleColor }]}>Date *</CustomText>
-      <CustomDateTimePicker
-        style={styles.input}
-        selectedDate={date}
-        onDateChange={setDate}
-      />
+        <CustomText style={[styles.title, { color: currentTheme.toggleColor }]}>Calories *</CustomText>
+        <CustomTextInput
+          style={styles.input}
+          keyboardType="numeric"
+          onChangeText={setCalories}
+        />
 
-      <SaveCancelButtonGroup 
-        onCancelPress={handleCancelPress}
-        onSavePress={handleSavePress}
-      />
-    </View>
+        <CustomText style={[styles.title, { color: currentTheme.toggleColor }]}>Date *</CustomText>
+        <CustomDateTimePicker
+          style={styles.input}
+          selectedDate={date}
+          onDateChange={setDate}
+        />
+
+        <SaveCancelButtonGroup 
+          onCancelPress={handleCancelPress}
+          onSavePress={handleSavePress}
+        />
+      </View>
+      </TouchableWithoutFeedback>
   );
 }
 
@@ -97,7 +100,7 @@ const styles = StyleSheet.create({
     backgroundColor: styling.colors.white,
     alignSelf: styling.alignment.center,
     width: '90%',
-    height: 100,
+    height: 90,
     margin: styling.margins.mediumMargin,
   },
   input: {
@@ -109,13 +112,13 @@ const styles = StyleSheet.create({
     margin: styling.margins.mediumMargin,
   },
   topTitle: {
-    marginTop: 40,
+    marginTop: styling.margins.largeMargin,
     marginLeft: styling.margins.largeMargin,
-    fontSize: styling.fontSize.largeFontSize,
+    fontSize: styling.fontSize.mediumFontSize,
   },
   title : {
     marginLeft: styling.margins.largeMargin,
-    marginTop: styling.margins.largeMargin,
-    fontSize: styling.fontSize.largeFontSize,
+    marginTop: styling.margins.mediumMargin,
+    fontSize: styling.fontSize.mediumFontSize,
   },
 })

@@ -53,7 +53,6 @@ export default function ItemList({ type }) {
 const styles = StyleSheet.create({
   entryContainer: {
     flexDirection: styling.flexDirection.row, 
-    // justifyContent: styling.flexDirection.spaceBetween, 
     alignItems: styling.alignment.center, 
     borderRadius: styling.borderRadius.smallBorderRadius,
     margin: styling.margins.extraLargeMargin,
@@ -79,13 +78,13 @@ const styles = StyleSheet.create({
     color: styling.colors.indigo,
     backgroundColor: styling.colors.white,
     fontWeight: styling.font.bold,
-    fontSize: styling.fontSize.mediumFontSize + 2,
+    fontSize: styling.fontSize.mediumFontSize,
   },
   amount: {
     padding: styling.paddings.smallPadding,
     color: styling.colors.indigo,
     backgroundColor: styling.colors.white,
     fontWeight: styling.font.bold,
-    fontSize: styling.fontSize.mediumFontSize + 2,
+    fontSize: styling.fontSize.mediumFontSize,
   },
 })

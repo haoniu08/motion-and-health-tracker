@@ -3,7 +3,8 @@ import { React, useState, useContext } from 'react';
 import CustomButton from '../components/CustomButton';
 import CustomText from '../components/CustomText';
 import CustomTextInput from '../components/CustomTextInput';
-import CustomDateTimePicker from '../components/CustomDateTimePicker'; // import new component
+import CustomDateTimePicker from '../components/CustomDateTimePicker';
+import SaveCancelButtonGroup from '../components/SaveCancelButtonGroup';
 import { DataContext } from '../context/DataContext';
 import { useTheme } from '../context/ThemeContext';
 import styling from '../utils/StylingUtils';
@@ -30,6 +31,10 @@ export default function AddDiet({ navigation }) {
       navigation.goBack();
     }
   }
+
+  function handleCancelPress () {
+    navigation.goBack();
+  } 
 
   function validateInput() {
     if (!dietType) {
@@ -75,10 +80,14 @@ export default function AddDiet({ navigation }) {
         onDateChange={setDate}
       />
 
-      <View style={styles.buttonContainer}>
+      {/* <View style={styles.buttonContainer}>
         <CustomButton title="Cancel" onPress={() => navigation.goBack()} customeStyle={styles.cancelButton} />
         <CustomButton title="Save" onPress={handleSavePress} customeStyle={styles.saveButton} />
-      </View>
+      </View> */}
+      <SaveCancelButtonGroup 
+        onCancelPress={handleCancelPress}
+        onSavePress={handleSavePress}
+      />
     </View>
   );
 }
@@ -113,16 +122,5 @@ const styles = StyleSheet.create({
     marginLeft: styling.margins.largeMargin,
     marginTop: styling.margins.largeMargin,
     fontSize: styling.fontSize.largeFontSize,
-  },
-  buttonContainer:{
-    position: styling.alignment.absolute,
-    bottom: 60,
-    left: 0,
-    right: 0,
-    justifyContent: styling.alignment.center,
-    flexDirection: styling.flexDirection.row,
-  },
-  cancelButton: {
-    marginRight: 2 * styling.margins.extraLargeMargin,
   },
 })

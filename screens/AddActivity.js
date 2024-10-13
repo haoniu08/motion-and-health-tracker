@@ -4,7 +4,8 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import CustomButton from '../components/CustomButton';
 import CustomText from '../components/CustomText';
 import CustomTextInput from '../components/CustomTextInput';
-import CustomDateTimePicker from '../components/CustomDateTimePicker'; // import new component
+import CustomDateTimePicker from '../components/CustomDateTimePicker';
+import SaveCancelButtonGroup from '../components/SaveCancelButtonGroup';
 import { DataContext } from '../context/DataContext';
 import { useTheme } from '../context/ThemeContext';
 import styling from '../utils/StylingUtils';
@@ -43,6 +44,10 @@ export default function AddActivity({ navigation }) {
       navigation.goBack();
     }
   }
+
+  function handleCancelPress () {
+    navigation.goBack();
+  } 
 
   function validateInput() {
     if (!activityType) {
@@ -92,10 +97,10 @@ export default function AddActivity({ navigation }) {
         onDateChange={setDate}
       />
 
-      <View style={styles.buttonContainer}>
-        <CustomButton title="Cancel" onPress={() => navigation.goBack()} customeStyle={styles.cancelButton} />
-        <CustomButton title="Save" onPress={handleSavePress} customeStyle={styles.saveButton} />
-      </View>
+      <SaveCancelButtonGroup 
+        onCancelPress={handleCancelPress}
+        onSavePress={handleSavePress}
+      />
     </View>
   );
 }
@@ -131,16 +136,5 @@ const styles = StyleSheet.create({
     marginLeft: styling.margins.largeMargin,
     marginTop: styling.margins.largeMargin,
     fontSize: styling.fontSize.largeFontSize,
-  },
-  buttonContainer:{
-    position: styling.alignment.absolute,
-    bottom: 60,
-    left: 0,
-    right: 0,
-    justifyContent: styling.alignment.center,
-    flexDirection: styling.flexDirection.row,
-  },
-  cancelButton: {
-    marginRight: 2 * styling.margins.extraLargeMargin,
   },
 })

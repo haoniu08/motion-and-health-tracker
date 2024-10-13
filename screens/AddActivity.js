@@ -1,7 +1,6 @@
 import { StyleSheet, View, Alert } from 'react-native';
 import { React, useState, useContext } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
-import CustomButton from '../components/CustomButton';
 import CustomText from '../components/CustomText';
 import CustomTextInput from '../components/CustomTextInput';
 import CustomDateTimePicker from '../components/CustomDateTimePicker';
@@ -45,9 +44,9 @@ export default function AddActivity({ navigation }) {
     }
   }
 
-  function handleCancelPress () {
+  function handleCancelPress() {
     navigation.goBack();
-  } 
+  }
 
   function validateInput() {
     if (!activityType) {
@@ -116,8 +115,8 @@ const styles = StyleSheet.create({
   },
   dropDownContainer: {
     alignSelf: styling.alignment.center,
-    width: '90%',  // 90% width for the dropdown list
-    backgroundColor: styling.colors.white,  // White background for the dropdown items
+    width: '90%',
+    backgroundColor: styling.colors.white,
   },
   input: {
     padding: styling.paddings.mediumPadding,
@@ -132,9 +131,9 @@ const styles = StyleSheet.create({
     marginLeft: styling.margins.largeMargin,
     fontSize: styling.fontSize.largeFontSize,
   },
-  title : {
+  title: {
     marginLeft: styling.margins.largeMargin,
     marginTop: styling.margins.largeMargin,
     fontSize: styling.fontSize.largeFontSize,
   },
-})
+});

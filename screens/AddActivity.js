@@ -70,7 +70,7 @@ export default function AddActivity({ navigation }) {
 
   return (
     <View style={[styles.container, { backgroundColor: currentTheme.backgroundColor }]}>
-      <CustomText style={styles.topTitle}>Activity *</CustomText>
+      <CustomText style={[styles.topTitle, { color: currentTheme.toggleColor }]}>Activity *</CustomText>
       <DropDownPicker
         open={open}
         value={activityType}
@@ -80,16 +80,17 @@ export default function AddActivity({ navigation }) {
         setItems={setItems}
         style={styles.dropDown}
         dropDownContainerStyle={styles.dropDownContainer}
+        placeholder=""
       />
 
-      <CustomText style={styles.title}>Duration (min) *</CustomText>
+      <CustomText style={[styles.title, { color: currentTheme.toggleColor }]}>Duration (min) *</CustomText>
       <CustomTextInput
         style={styles.input}
         keyboardType="numeric"
         onChangeText={setDuration}
       />
 
-      <CustomText style={styles.title}>Date *</CustomText>
+      <CustomText style={[styles.title, { color: currentTheme.toggleColor }]}>Date *</CustomText>
       <CustomDateTimePicker
         style={styles.input}
         selectedDate={date}

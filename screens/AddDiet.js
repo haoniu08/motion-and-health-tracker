@@ -1,6 +1,5 @@
 import { StyleSheet, View, Alert } from 'react-native';
 import { React, useState, useContext } from 'react';
-import CustomButton from '../components/CustomButton';
 import CustomText from '../components/CustomText';
 import CustomTextInput from '../components/CustomTextInput';
 import CustomDateTimePicker from '../components/CustomDateTimePicker';
@@ -58,7 +57,7 @@ export default function AddDiet({ navigation }) {
 
   return (
     <View style={[styles.container, { backgroundColor: currentTheme.backgroundColor }]}>
-      <CustomText style={styles.topTitle}>Description *</CustomText>
+      <CustomText style={[styles.topTitle, { color: currentTheme.toggleColor }]}>Description *</CustomText>
       <CustomTextInput
         style={styles.topInput}
         onChangeText={setDietType}
@@ -66,24 +65,20 @@ export default function AddDiet({ navigation }) {
         textAlignVertical="top"
       />
 
-      <CustomText style={styles.title}>Calories *</CustomText>
+      <CustomText style={[styles.title, { color: currentTheme.toggleColor }]}>Calories *</CustomText>
       <CustomTextInput
         style={styles.input}
         keyboardType="numeric"
         onChangeText={setCalories}
       />
 
-      <CustomText style={styles.title}>Date *</CustomText>
+      <CustomText style={[styles.title, { color: currentTheme.toggleColor }]}>Date *</CustomText>
       <CustomDateTimePicker
         style={styles.input}
         selectedDate={date}
         onDateChange={setDate}
       />
 
-      {/* <View style={styles.buttonContainer}>
-        <CustomButton title="Cancel" onPress={() => navigation.goBack()} customeStyle={styles.cancelButton} />
-        <CustomButton title="Save" onPress={handleSavePress} customeStyle={styles.saveButton} />
-      </View> */}
       <SaveCancelButtonGroup 
         onCancelPress={handleCancelPress}
         onSavePress={handleSavePress}

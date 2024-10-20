@@ -11,11 +11,14 @@ import AddActivity from './screens/AddActivity';
 import AddDiet from './screens/AddDiet';
 import DataProvider from './context/DataContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
+import { app } from "./Firebase/firebaseSetup";
 
 const BottomTab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 function BottomTabs() {
+  console.log(app);
+
   const { currentTheme } = useTheme();
   return (
     <BottomTab.Navigator

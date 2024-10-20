@@ -1,7 +1,7 @@
-import { TouchableOpacity, StyleSheet } from 'react-native'
-import CustomText from './CustomText'
-import styling from '../utils/StylingUtils'
-import React from 'react'
+import { Pressable, StyleSheet } from 'react-native';
+import CustomText from './CustomText';
+import styling from '../utils/StylingUtils';
+import React from 'react';
 
 const CustomButton = ({
   onPress,
@@ -10,14 +10,18 @@ const CustomButton = ({
   textColor,
 }) => {
   return (
-    <TouchableOpacity
-      style={[styles.button, customeStyle]}
+    <Pressable
+      style={({ pressed }) => [
+        styles.button,
+        customeStyle,
+        pressed && styles.pressed,
+      ]}
       onPress={onPress}
     >
       <CustomText style={[styles.buttonText, { color: textColor }]}>{title}</CustomText>
-    </TouchableOpacity>
-  )
-}
+    </Pressable>
+  );
+};
 
 const styles = StyleSheet.create({
   buttonText: {

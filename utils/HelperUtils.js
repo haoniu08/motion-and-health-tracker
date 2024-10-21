@@ -40,4 +40,16 @@ export function handleDelete(item) {
     } else if (item.calories) {
       deleteFromDB(item.id, 'diet');
     }
-}
+  }
+  
+  export function handleDeletePress(item, handleDelete, navigation) {
+    Alert.alert('Delete', 'Are you sure you want to delete this item?', [
+      { text: 'No', style: 'cancel' },
+      { text: 'Yes', onPress: () => {
+          handleDelete(item);
+          navigation.goBack();
+        }
+      },
+    ]);
+  }
+

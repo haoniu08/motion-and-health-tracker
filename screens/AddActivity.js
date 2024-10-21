@@ -1,4 +1,4 @@
-import { StyleSheet, View, Alert, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import CustomText from '../components/CustomText';
@@ -7,7 +7,7 @@ import CustomDateTimePicker from '../components/CustomDateTimePicker';
 import SaveCancelButtonGroup from '../components/SaveCancelButtonGroup';
 import { useTheme } from '../context/ThemeContext';
 import styling from '../utils/StylingUtils';
-import { writeToDB, updateDB, deleteFromDB } from '../Firebase/firebaseHelper';
+import { writeToDB, updateDB } from '../Firebase/firebaseHelper';
 import DeleteIcon from '../components/DeleteIcon';
 import CheckBoxForApproval from '../components/CheckBoxForApproval';
 import { 
@@ -17,6 +17,7 @@ import {
   handleSaveAction,
   isSpecialEntry,
   handleDelete,
+  handleDeletePress,
 } from '../utils/HelperUtils';
 
 export default function AddActivity({ navigation, item, isEdit }) {
@@ -54,23 +55,12 @@ export default function AddActivity({ navigation, item, isEdit }) {
     navigation.setOptions({
       headerRight: () => (
         <DeleteIcon
-          onPress={handleDeletePress}
-          color={currentTheme.color}
+        onPress={() => handleDeletePress(item, handleDelete, navigation)}
+        color={currentTheme.color}
         />
       ),
     });
   }, [isEdit, item]);
-
-  function handleDeletePress() {
-    Alert.alert('Delete', 'Are you sure you want to delete this item?', [
-      { text: 'No', style: 'cancel' },
-      { text: 'Yes', onPress: () => {
-        // deleteFromDB(item.id, 'activities');
-        handleDelete(item);
-        navigation.goBack();
-      }}
-    ]);
-  }
 
   function handleSavePress() {
     if (validateInput()) {
@@ -96,35 +86,6 @@ export default function AddActivity({ navigation, item, isEdit }) {
       navigation.goBack();
     }
   }
-
-  // const isSpecialEntry = (item) => {
-  //   if (item.type === 'Running' || item.type === 'Weights') {
-  //     return item.duration > 60;
-  //   }
-  //   if (item.calories) {
-  //     return item.calories > 800;
-  //   }
-  //   return false;
-  // };
-
-  // function handleEditSave() {
-  //   Alert.alert('Important', 'Are you sure you want to save these changes?', [
-  //     { text: 'No', style: 'cancel' },
-  //     { text: 'Yes', onPress: handleSavePress }
-  //   ]);
-  // }
-
-  // function handleSaveAction() {
-  //   if (isEdit) {
-  //     handleEditSave(handleSavePress);
-  //   } else {
-  //     handleSavePress();
-  //   }
-  // }
-
-  // function handleCancelPress() {
-  //   navigation.goBack();
-  // }
 
   function validateInput() {
     if (!activityType) {

@@ -9,7 +9,7 @@ import Diet from './screens/Diet';
 import Settings from './screens/Settings';
 import AddActivity from './screens/AddActivity';
 import AddDiet from './screens/AddDiet';
-import DataProvider from './context/DataContext';
+// import DataProvider from './context/DataContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { database } from "./Firebase/firebaseSetup";
 
@@ -81,9 +81,9 @@ function ThemedApp() {
 export default function App() {
   return (
     <ThemeProvider>
-      <DataProvider>
+      {/* <DataProvider> */}
         <ThemedApp />
-      </DataProvider>
+      {/* </DataProvider> */}
     </ThemeProvider>
   );
 }

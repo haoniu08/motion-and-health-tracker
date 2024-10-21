@@ -1,14 +1,28 @@
-import { StyleSheet, Text, View, FlatList } from 'react-native'
-import React from 'react'
-import { useData } from '../context/DataContext'
+import { StyleSheet, View, FlatList } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { collection, onSnapshot } from 'firebase/firestore'
+import { database } from '../Firebase/firebaseSetup'
 import CustomText from './CustomText'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import styling from '../utils/StylingUtils'
 
 export default function ItemList({ type }) {
 
-  const { activities, dietEntries } = useData();
-  const data = type === 'activities' ? activities : dietEntries;
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const collectionName = type === 'activities' ? 'activities' : 'diet';
+    const unsubscribe = onSnapshot(collection(database, collectionName), (querySnapshot) => {
+      const items = [];
+      querySnapshot.forEach((doc) => {
+        items.push({ ...doc.data(), id: doc.id });
+      });
+      setData(items);
+    });
+
+    return () => unsubscribe();
+  }, [type]);
+
   const isSpecialEntry = (item) => {
     if (item.type === 'Running' || item.type === 'Weights') {
       return item.duration > 60;

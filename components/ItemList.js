@@ -1,4 +1,4 @@
-import { StyleSheet, View, FlatList } from 'react-native'
+import { StyleSheet, View, FlatList, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { collection, onSnapshot } from 'firebase/firestore'
 import { database } from '../Firebase/firebaseSetup'
@@ -6,7 +6,7 @@ import CustomText from './CustomText'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import styling from '../utils/StylingUtils'
 
-export default function ItemList({ type }) {
+export default function ItemList({ type, navigation }) {
 
   const [data, setData] = useState([]);
 
@@ -38,20 +38,25 @@ export default function ItemList({ type }) {
     return newDate.toDateString();
   }
 
+  const handlePress = (item) => {
+    navigation.navigate('Edit');
+  };
+
   const renderItem = ({ item }) => (
-    <View style={styles.entryContainer}>
-      <CustomText style={styles.title}>{item.type}</CustomText>
-      {isSpecialEntry(item) && (
+    <Pressable onPress={() => handlePress(item)}>
+      <View style={styles.entryContainer}>
+        <CustomText style={styles.title}>{item.type}</CustomText>
+        {isSpecialEntry(item) && (
           <AntDesign name="warning" size={20} color="yellow" style={styles.icon} />
-      )}
-      
-      <View style={styles.rightContainer}>
-        <CustomText style={styles.date}>{formatDate(item.date)}</CustomText>
-        <CustomText style={styles.amount}>
-          {type === 'activities' ? `${item.duration} min` : item.calories}
-        </CustomText>
-    </View>
-    </View>
+        )}
+        <View style={styles.rightContainer}>
+          <CustomText style={styles.date}>{formatDate(item.date)}</CustomText>
+          <CustomText style={styles.amount}>
+            {type === 'activities' ? `${item.duration} min` : `${item.calories} cal`}
+          </CustomText>
+        </View>
+      </View>
+    </Pressable>
       
   );
 

@@ -41,7 +41,7 @@ export default function Diet({ navigation }) {
 
   return (
     <View style={[styles.container, { backgroundColor: currentTheme.backgroundColor }]}>
-      <ItemList type="diet" />
+      <ItemList type="diet"  navigation={navigation}/>
     </View>
   );
 }

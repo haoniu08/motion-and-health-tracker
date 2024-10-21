@@ -4,7 +4,7 @@ import ItemList from '../components/ItemList'
 import { useTheme } from '../context/ThemeContext'
 import { Ionicons } from '@expo/vector-icons';
 import styling from '../utils/StylingUtils';
-import { database } from '../Firebase/firebaseSetup';
+// import { database } from '../Firebase/firebaseSetup';
 
 export default function Activities({ navigation }) {
 
@@ -42,7 +42,7 @@ export default function Activities({ navigation }) {
 
   return (
     <View style={[styles.container, { backgroundColor: currentTheme.backgroundColor }]}>
-      <ItemList type="activities" />
+      <ItemList type="activities" navigation={navigation}/>
     </View>
   );
 }

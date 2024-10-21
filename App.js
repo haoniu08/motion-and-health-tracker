@@ -9,6 +9,7 @@ import Diet from './screens/Diet';
 import Settings from './screens/Settings';
 import AddActivity from './screens/AddActivity';
 import AddDiet from './screens/AddDiet';
+import Edit from './screens/Edit';
 // import DataProvider from './context/DataContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { database } from "./Firebase/firebaseSetup";
@@ -71,6 +72,14 @@ function ThemedApp() {
           options={{
             title: "Add A Diet Entry",
             headerBackTitle: "Diet",
+          }}
+        />
+        <Stack.Screen
+          name="Edit"
+          component={Edit}
+          options={{
+            title: "Edit",
+            headerBackTitle: "Back",
           }}
         />
       </Stack.Navigator>

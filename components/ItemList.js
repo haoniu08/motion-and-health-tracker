@@ -22,15 +22,15 @@ export default function ItemList({ type, navigation }) {
     return () => unsubscribe();
   }, [type]);
 
-  const isSpecialEntry = (item) => {
-    if (item.type === 'Running' || item.type === 'Weights') {
-      return item.duration > 60;
-    }
-    if (item.calories) {
-      return item.calories > 800;
-    }
-    return false;
-  };
+  // const isSpecialEntry = (item) => {
+  //   if (item.type === 'Running' || item.type === 'Weights') {
+  //     return item.duration > 60;
+  //   }
+  //   if (item.calories) {
+  //     return item.calories > 800;
+  //   }
+  //   return false;
+  // };
 
   const formatDate = (date) => {
     const newDate = new Date(date);
@@ -59,7 +59,7 @@ export default function ItemList({ type, navigation }) {
       </View>
     </Pressable>
   );
-  
+
   return (
     <FlatList
       data={data}

@@ -7,7 +7,8 @@ import CustomDateTimePicker from '../components/CustomDateTimePicker';
 import SaveCancelButtonGroup from '../components/SaveCancelButtonGroup';
 import { useTheme } from '../context/ThemeContext';
 import styling from '../utils/StylingUtils';
-import { writeToDB, updateDB } from '../Firebase/firebaseHelper';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { writeToDB, updateDB, deleteFromDB } from '../Firebase/firebaseHelper';
 import Checkbox from 'expo-checkbox';
 
 export default function AddActivity({ navigation, item, isEdit }) {
@@ -39,7 +40,33 @@ export default function AddActivity({ navigation, item, isEdit }) {
       setIsApproved(item.isApproved || false);
       setShowSpecialCheckbox(item.isSpecial && !item.isApproved);
     }
+    // a hearderRight button to delete the item, in the edit mode
+    // delete from firebase, use deleteFromDB
+
+    navigation.setOptions({
+      headerRight: () => {
+        return isEdit ? (
+          <AntDesign
+            name="delete"
+            size={styling.fontSize.extraLargeFontSize}
+            color={currentTheme.color}
+            style={{ marginRight: styling.margins.largeMargin }}
+            onPress={handleDeletePress}
+          />
+        ) : null;
+      }
+    });
   }, [isEdit, item]);
+
+  function handleDeletePress() {
+    Alert.alert('Delete', 'Are you sure you want to delete this item?', [
+      { text: 'No', style: 'cancel' },
+      { text: 'Yes', onPress: () => {
+        deleteFromDB(item.id, 'activities');
+        navigation.goBack();
+      }}
+    ]);
+  }
 
   const isSpecialEntry = (item) => {
     if (item.type === 'Running' || item.type === 'Weights') {
@@ -148,11 +175,14 @@ export default function AddActivity({ navigation, item, isEdit }) {
         
         {isEdit && showSpecialCheckbox && (
           <View style={styles.checkboxContainer}>
-            <CustomText style={[styles.label, { color: currentTheme.toggleColor }]}>Mark as approved</CustomText>
+            <CustomText style={[styles.label, { color: currentTheme.toggleColor }]}>
+              Would you like to approve this special item?
+            </CustomText>
             <Checkbox
               value={isApproved}
               onValueChange={setIsApproved}
               style={styles.checkbox}
+              color={currentTheme.toggleColor}
             />
           </View>
         )}
@@ -200,10 +230,13 @@ const styles = StyleSheet.create({
   checkboxContainer: {
     flexDirection: styling.flexDirection.row,
     position: styling.alignment.absolute,
-    bottom: 80,
+    bottom: 85,
     left: 0,
     right: 0,
     justifyContent: styling.alignment.center,
     flexDirection: styling.flexDirection.row,
+  },
+  label: {
+    marginRight: styling.margins.mediumMargin,
   }
 });

@@ -1,20 +1,18 @@
 import { StyleSheet, View, Alert, Keyboard, TouchableWithoutFeedback } from 'react-native';
-import { React, useState, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import CustomText from '../components/CustomText';
 import CustomTextInput from '../components/CustomTextInput';
 import CustomDateTimePicker from '../components/CustomDateTimePicker';
 import SaveCancelButtonGroup from '../components/SaveCancelButtonGroup';
-// import { DataContext } from '../context/DataContext';
 import { useTheme } from '../context/ThemeContext';
 import styling from '../utils/StylingUtils';
-import { writeToDB } from '../Firebase/firebaseHelper';
+import { writeToDB, updateDB } from '../Firebase/firebaseHelper';
+import Checkbox from 'expo-checkbox';
 
-export default function AddActivity({ navigation }) {
+export default function AddActivity({ navigation, item, isEdit }) {
   const { currentTheme } = useTheme();
-  // const { addActivity } = useContext(DataContext);
-
-  const [activityType, setActivityType] = useState('');
+  const [activityType, setActivityType] = useState(item?.type || '');
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
     { label: 'Walking', value: 'Walking' },
@@ -26,23 +24,70 @@ export default function AddActivity({ navigation }) {
     { label: 'Hiking', value: 'Hiking' },
   ]);
 
-  const [duration, setDuration] = useState('');
-  const [date, setDate] = useState(null);
+  const [duration, setDuration] = useState(item?.duration || '');
+  const [date, setDate] = useState(item ? new Date(item.date) : null);
+  const [isSpecial, setIsSpecial] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
+  const [showSpecialCheckbox, setShowSpecialCheckbox] = useState(false);
+
+  useEffect(() => {
+    if (isEdit && item) {
+      setActivityType(item.type);
+      setDuration(item.duration.toString());
+      setDate(new Date(item.date));
+      setIsSpecial(item.isSpecial || false);
+      setIsApproved(item.isApproved || false);
+      setShowSpecialCheckbox(item.isSpecial && !item.isApproved);
+    }
+  }, [isEdit, item]);
+
+  const isSpecialEntry = (item) => {
+    if (item.type === 'Running' || item.type === 'Weights') {
+      return item.duration > 60;
+    }
+    if (item.calories) {
+      return item.calories > 800;
+    }
+    return false;
+  };
 
   function handleSavePress() {
     if (validateInput()) {
       const adjustedDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+      
+      // Update the isSpecial value based on the logic
+      const isSpecialValue = isSpecialEntry({ type: activityType, duration });
+  
       const newActivity = {
         type: activityType,
         duration: parseInt(duration),
         date: adjustedDate.toISOString(),
+        isSpecial: isSpecialValue,
+        isApproved: isApproved,
       };
-
-      // addActivity(newActivity);
-      writeToDB(newActivity, "activities");
-      console.log('Activity added:', newActivity);
-
+  
+      if (isEdit) {
+        updateDB(item.id, newActivity, 'activities');
+      } else {
+        writeToDB(newActivity, 'activities');
+      }
+  
       navigation.goBack();
+    }
+  }
+
+  function handleEditSave() {
+    Alert.alert('Important', 'Are you sure you want to save these changes?', [
+      { text: 'No', style: 'cancel' },
+      { text: 'Yes', onPress: handleSavePress }
+    ]);
+  }
+
+  function handleSaveAction() {
+    if (isEdit) {
+      handleEditSave();
+    } else {
+      handleSavePress();
     }
   }
 
@@ -91,6 +136,7 @@ export default function AddActivity({ navigation }) {
           style={styles.input}
           keyboardType="numeric"
           onChangeText={setDuration}
+          value={duration.toString()}
         />
 
         <CustomText style={[styles.title, { color: currentTheme.toggleColor }]}>Date *</CustomText>
@@ -99,10 +145,20 @@ export default function AddActivity({ navigation }) {
           selectedDate={date}
           onDateChange={setDate}
         />
-
+        
+        {isEdit && showSpecialCheckbox && (
+          <View style={styles.checkboxContainer}>
+            <CustomText style={[styles.label, { color: currentTheme.toggleColor }]}>Mark as approved</CustomText>
+            <Checkbox
+              value={isApproved}
+              onValueChange={setIsApproved}
+              style={styles.checkbox}
+            />
+          </View>
+        )}
         <SaveCancelButtonGroup 
           onCancelPress={handleCancelPress}
-          onSavePress={handleSavePress}
+          onSavePress={handleSaveAction}
         />
       </View>
     </TouchableWithoutFeedback>
@@ -141,4 +197,13 @@ const styles = StyleSheet.create({
     marginTop: styling.margins.mediumMargin,
     fontSize: styling.fontSize.mediumFontSize,
   },
+  checkboxContainer: {
+    flexDirection: styling.flexDirection.row,
+    position: styling.alignment.absolute,
+    bottom: 80,
+    left: 0,
+    right: 0,
+    justifyContent: styling.alignment.center,
+    flexDirection: styling.flexDirection.row,
+  }
 });

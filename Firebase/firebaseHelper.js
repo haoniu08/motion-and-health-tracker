@@ -1,4 +1,4 @@
-import { collection, addDoc, doc, deleteDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { database } from "./firebaseSetup";
 
 export async function writeToDB(data, collectionName) {
@@ -19,5 +19,15 @@ export async function deleteFromDB(deletedId, collectionName) {
     } catch (err) {
         console.log("Delete from database", err)
     }
+}
+
+export async function updateDB(docId, data, collectionName) {
+	try {
+		const docRef = doc(database, collectionName, docId);
+		await updateDoc(docRef, data);
+		console.log("Document updated with ID: ", docId);
+	} catch (err) {
+		console.log("Update database", err)
+	}
 }
     

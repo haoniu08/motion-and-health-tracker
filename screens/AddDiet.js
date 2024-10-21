@@ -4,13 +4,14 @@ import CustomText from '../components/CustomText';
 import CustomTextInput from '../components/CustomTextInput';
 import CustomDateTimePicker from '../components/CustomDateTimePicker';
 import SaveCancelButtonGroup from '../components/SaveCancelButtonGroup';
-import { DataContext } from '../context/DataContext';
+// import { DataContext } from '../context/DataContext';
 import { useTheme } from '../context/ThemeContext';
 import styling from '../utils/StylingUtils';
+import { writeToDB } from '../Firebase/firebaseHelper';
 
 export default function AddDiet({ navigation }) {
   const { currentTheme } = useTheme();
-  const { addDietEntry } = useContext(DataContext);
+  // const { addDietEntry } = useContext(DataContext);
 
   const [dietType, setDietType] = useState('');
   const [calories, setCalories] = useState('');
@@ -25,7 +26,8 @@ export default function AddDiet({ navigation }) {
         date: adjustedDate.toISOString(),
       };
 
-      addDietEntry(newDietEntry);
+      // addDietEntry(newDietEntry);
+      writeToDB(newDietEntry, "diet");
       console.log('Diet added:', newDietEntry);
       navigation.goBack();
     }

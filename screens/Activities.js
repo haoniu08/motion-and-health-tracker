@@ -1,9 +1,10 @@
-import { StyleSheet, View, Button } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { React, useEffect } from 'react'
 import ItemList from '../components/ItemList'
 import { useTheme } from '../context/ThemeContext'
 import { Ionicons } from '@expo/vector-icons';
 import styling from '../utils/StylingUtils';
+import { database } from '../Firebase/firebaseSetup';
 
 export default function Activities({ navigation }) {
 

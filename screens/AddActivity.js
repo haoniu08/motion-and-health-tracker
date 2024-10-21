@@ -5,13 +5,14 @@ import CustomText from '../components/CustomText';
 import CustomTextInput from '../components/CustomTextInput';
 import CustomDateTimePicker from '../components/CustomDateTimePicker';
 import SaveCancelButtonGroup from '../components/SaveCancelButtonGroup';
-import { DataContext } from '../context/DataContext';
+// import { DataContext } from '../context/DataContext';
 import { useTheme } from '../context/ThemeContext';
 import styling from '../utils/StylingUtils';
+import { writeToDB } from '../Firebase/firebaseHelper';
 
 export default function AddActivity({ navigation }) {
   const { currentTheme } = useTheme();
-  const { addActivity } = useContext(DataContext);
+  // const { addActivity } = useContext(DataContext);
 
   const [activityType, setActivityType] = useState('');
   const [open, setOpen] = useState(false);
@@ -37,7 +38,8 @@ export default function AddActivity({ navigation }) {
         date: adjustedDate.toISOString(),
       };
 
-      addActivity(newActivity);
+      // addActivity(newActivity);
+      writeToDB(newActivity, "activities");
       console.log('Activity added:', newActivity);
 
       navigation.goBack();

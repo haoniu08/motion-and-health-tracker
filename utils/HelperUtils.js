@@ -35,12 +35,12 @@ export const isSpecialEntry = (item) => {
 };
 
 export function handleDelete(item) {
-    if (item.type) {
+    if (item.duration) {
       deleteFromDB(item.id, 'activities');
     } else if (item.calories) {
       deleteFromDB(item.id, 'diet');
     }
-  }
+}
   
   export function handleDeletePress(item, handleDelete, navigation) {
     Alert.alert('Delete', 'Are you sure you want to delete this item?', [

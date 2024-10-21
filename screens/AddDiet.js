@@ -1,41 +1,77 @@
-import { StyleSheet, View, Alert, Keyboard, TouchableWithoutFeedback } from 'react-native';
-import { React, useState, useContext } from 'react';
+import { StyleSheet, View, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import CustomText from '../components/CustomText';
 import CustomTextInput from '../components/CustomTextInput';
 import CustomDateTimePicker from '../components/CustomDateTimePicker';
 import SaveCancelButtonGroup from '../components/SaveCancelButtonGroup';
-// import { DataContext } from '../context/DataContext';
+import CheckBoxForApproval from '../components/CheckBoxForApproval';
 import { useTheme } from '../context/ThemeContext';
 import styling from '../utils/StylingUtils';
-import { writeToDB } from '../Firebase/firebaseHelper';
+import { writeToDB, updateDB } from '../Firebase/firebaseHelper';
+import DeleteIcon from '../components/DeleteIcon';
+import {
+  handleCancelPress,
+  showAlert,
+  handleEditSave,
+  handleSaveAction,
+  isSpecialEntry,
+  handleDelete,
+  handleDeletePress
+} from '../utils/HelperUtils';
 
-export default function AddDiet({ navigation }) {
+export default function AddDiet({ navigation, item, isEdit }) {
   const { currentTheme } = useTheme();
-  // const { addDietEntry } = useContext(DataContext);
+  const [dietType, setDietType] = useState(item?.type || '');
+  const [calories, setCalories] = useState(item?.calories || '');
+  const [date, setDate] = useState(item ? new Date(item.date) : null);
+  const [isSpecial, setIsSpecial] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
+  const [showSpecialCheckbox, setShowSpecialCheckbox] = useState(false);
 
-  const [dietType, setDietType] = useState('');
-  const [calories, setCalories] = useState('');
-  const [date, setDate] = useState(null);
+  useEffect(() => {
+    if (isEdit && item) {
+      setDietType(item.type);
+      setCalories(item.calories.toString());
+      setDate(new Date(item.date));
+      setIsSpecial(item.isSpecial || false);
+      setIsApproved(item.isApproved || false);
+      setShowSpecialCheckbox(item.isSpecial && !item.isApproved);
+    }
+
+    navigation.setOptions({
+      headerRight: () => (
+        <DeleteIcon
+          onPress={() => handleDeletePress(item, handleDelete, navigation)}
+          color={currentTheme.color}
+        />
+      ),
+    });
+  }, [isEdit, item]);
 
   function handleSavePress() {
     if (validateInput()) {
       const adjustedDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-      const newDietEntry = {
+      
+      // Update the isSpecial value based on the logic
+      const isSpecialValue = isSpecialEntry({ calories });
+
+      const newDiet = {
         type: dietType,
         calories: parseInt(calories),
         date: adjustedDate.toISOString(),
+        isSpecial: isSpecialValue,
+        isApproved: isApproved,
       };
 
-      // addDietEntry(newDietEntry);
-      writeToDB(newDietEntry, "diet");
-      console.log('Diet added:', newDietEntry);
+      if (isEdit) {
+        updateDB(item.id, newDiet, 'diet');
+      } else {
+        writeToDB(newDiet, 'diet');
+      }
+
       navigation.goBack();
     }
   }
-
-  function handleCancelPress () {
-    navigation.goBack();
-  } 
 
   function validateInput() {
     if (!dietType) {
@@ -53,18 +89,14 @@ export default function AddDiet({ navigation }) {
     return true;
   }
 
-  function showAlert(message) {
-    Alert.alert('Invalid Input', message, [{ text: 'OK' }], { cancelable: true });
-  }
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-
       <View style={[styles.container, { backgroundColor: currentTheme.backgroundColor }]}>
         <CustomText style={[styles.topTitle, { color: currentTheme.toggleColor }]}>Description *</CustomText>
         <CustomTextInput
           style={styles.topInput}
           onChangeText={setDietType}
+          value={dietType}
           multiline={true}
           textAlignVertical="top"
         />
@@ -74,6 +106,7 @@ export default function AddDiet({ navigation }) {
           style={styles.input}
           keyboardType="numeric"
           onChangeText={setCalories}
+          value={calories.toString()}
         />
 
         <CustomText style={[styles.title, { color: currentTheme.toggleColor }]}>Date *</CustomText>
@@ -83,12 +116,20 @@ export default function AddDiet({ navigation }) {
           onDateChange={setDate}
         />
 
+        {isEdit && showSpecialCheckbox && (
+          <CheckBoxForApproval
+            isApproved={isApproved}
+            setIsApproved={setIsApproved}
+            currentTheme={currentTheme}
+          />
+        )}
+
         <SaveCancelButtonGroup 
-          onCancelPress={handleCancelPress}
-          onSavePress={handleSavePress}
+          onCancelPress={() => handleCancelPress(navigation)}
+          onSavePress={() => handleSaveAction(isEdit, handleEditSave, handleSavePress)}
         />
       </View>
-      </TouchableWithoutFeedback>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -123,4 +164,4 @@ const styles = StyleSheet.create({
     marginTop: styling.margins.mediumMargin,
     fontSize: styling.fontSize.mediumFontSize,
   },
-})
+});

@@ -7,9 +7,17 @@ import CustomDateTimePicker from '../components/CustomDateTimePicker';
 import SaveCancelButtonGroup from '../components/SaveCancelButtonGroup';
 import { useTheme } from '../context/ThemeContext';
 import styling from '../utils/StylingUtils';
-import AntDesign from '@expo/vector-icons/AntDesign';
 import { writeToDB, updateDB, deleteFromDB } from '../Firebase/firebaseHelper';
-import Checkbox from 'expo-checkbox';
+import DeleteIcon from '../components/DeleteIcon';
+import CheckBoxForApproval from '../components/CheckBoxForApproval';
+import { 
+  handleCancelPress, 
+  showAlert, 
+  handleEditSave,  
+  handleSaveAction,
+  isSpecialEntry,
+  handleDelete,
+} from '../utils/HelperUtils';
 
 export default function AddActivity({ navigation, item, isEdit }) {
   const { currentTheme } = useTheme();
@@ -44,17 +52,12 @@ export default function AddActivity({ navigation, item, isEdit }) {
     // delete from firebase, use deleteFromDB
 
     navigation.setOptions({
-      headerRight: () => {
-        return isEdit ? (
-          <AntDesign
-            name="delete"
-            size={styling.fontSize.extraLargeFontSize}
-            color={currentTheme.color}
-            style={{ marginRight: styling.margins.largeMargin }}
-            onPress={handleDeletePress}
-          />
-        ) : null;
-      }
+      headerRight: () => (
+        <DeleteIcon
+          onPress={handleDeletePress}
+          color={currentTheme.color}
+        />
+      ),
     });
   }, [isEdit, item]);
 
@@ -62,21 +65,12 @@ export default function AddActivity({ navigation, item, isEdit }) {
     Alert.alert('Delete', 'Are you sure you want to delete this item?', [
       { text: 'No', style: 'cancel' },
       { text: 'Yes', onPress: () => {
-        deleteFromDB(item.id, 'activities');
+        // deleteFromDB(item.id, 'activities');
+        handleDelete(item);
         navigation.goBack();
       }}
     ]);
   }
-
-  const isSpecialEntry = (item) => {
-    if (item.type === 'Running' || item.type === 'Weights') {
-      return item.duration > 60;
-    }
-    if (item.calories) {
-      return item.calories > 800;
-    }
-    return false;
-  };
 
   function handleSavePress() {
     if (validateInput()) {
@@ -103,24 +97,34 @@ export default function AddActivity({ navigation, item, isEdit }) {
     }
   }
 
-  function handleEditSave() {
-    Alert.alert('Important', 'Are you sure you want to save these changes?', [
-      { text: 'No', style: 'cancel' },
-      { text: 'Yes', onPress: handleSavePress }
-    ]);
-  }
+  // const isSpecialEntry = (item) => {
+  //   if (item.type === 'Running' || item.type === 'Weights') {
+  //     return item.duration > 60;
+  //   }
+  //   if (item.calories) {
+  //     return item.calories > 800;
+  //   }
+  //   return false;
+  // };
 
-  function handleSaveAction() {
-    if (isEdit) {
-      handleEditSave();
-    } else {
-      handleSavePress();
-    }
-  }
+  // function handleEditSave() {
+  //   Alert.alert('Important', 'Are you sure you want to save these changes?', [
+  //     { text: 'No', style: 'cancel' },
+  //     { text: 'Yes', onPress: handleSavePress }
+  //   ]);
+  // }
 
-  function handleCancelPress() {
-    navigation.goBack();
-  }
+  // function handleSaveAction() {
+  //   if (isEdit) {
+  //     handleEditSave(handleSavePress);
+  //   } else {
+  //     handleSavePress();
+  //   }
+  // }
+
+  // function handleCancelPress() {
+  //   navigation.goBack();
+  // }
 
   function validateInput() {
     if (!activityType) {
@@ -136,10 +140,6 @@ export default function AddActivity({ navigation, item, isEdit }) {
       return false;
     }
     return true;
-  }
-
-  function showAlert(message) {
-    Alert.alert('Invalid Input', message, [{ text: 'OK' }], { cancelable: true });
   }
 
   return (
@@ -174,21 +174,16 @@ export default function AddActivity({ navigation, item, isEdit }) {
         />
         
         {isEdit && showSpecialCheckbox && (
-          <View style={styles.checkboxContainer}>
-            <CustomText style={[styles.label, { color: currentTheme.toggleColor }]}>
-              Would you like to approve this special item?
-            </CustomText>
-            <Checkbox
-              value={isApproved}
-              onValueChange={setIsApproved}
-              style={styles.checkbox}
-              color={currentTheme.toggleColor}
-            />
-          </View>
+          <CheckBoxForApproval
+            isApproved={isApproved}
+            setIsApproved={setIsApproved}
+            currentTheme={currentTheme}
+          />
         )}
+
         <SaveCancelButtonGroup 
-          onCancelPress={handleCancelPress}
-          onSavePress={handleSaveAction}
+          onCancelPress={() => handleCancelPress(navigation)}
+          onSavePress={() => handleSaveAction(isEdit, handleEditSave, handleSavePress)}
         />
       </View>
     </TouchableWithoutFeedback>
@@ -227,16 +222,4 @@ const styles = StyleSheet.create({
     marginTop: styling.margins.mediumMargin,
     fontSize: styling.fontSize.mediumFontSize,
   },
-  checkboxContainer: {
-    flexDirection: styling.flexDirection.row,
-    position: styling.alignment.absolute,
-    bottom: 85,
-    left: 0,
-    right: 0,
-    justifyContent: styling.alignment.center,
-    flexDirection: styling.flexDirection.row,
-  },
-  label: {
-    marginRight: styling.margins.mediumMargin,
-  }
 });

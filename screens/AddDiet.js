@@ -38,15 +38,18 @@ export default function AddDiet({ navigation, item, isEdit }) {
       setShowSpecialCheckbox(item.isSpecial && !item.isApproved);
     }
 
-    navigation.setOptions({
-      headerRight: () => (
-        <DeleteIcon
-          onPress={() => handleDeletePress(item, handleDelete, navigation)}
-          color={currentTheme.color}
-        />
-      ),
-    });
+    if (isEdit) {
+      navigation.setOptions({
+        headerRight: () => (
+          <DeleteIcon
+            onPress={() => handleDeletePress(item, handleDelete, navigation)}
+            color={currentTheme.color}
+          />
+        ),
+      });
+    } 
   }, [isEdit, item]);
+
 
   function handleSavePress() {
     if (validateInput()) {

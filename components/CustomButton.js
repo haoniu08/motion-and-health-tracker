@@ -8,6 +8,7 @@ const CustomButton = ({
   title,
   customeStyle,
   textColor,
+  children,
 }) => {
   return (
     <Pressable
@@ -20,6 +21,7 @@ const CustomButton = ({
       onPress={onPress}
     >
       <CustomText style={[styles.buttonText, { color: textColor }]}>{title}</CustomText>
+      {children}
     </Pressable>
   );
 };
@@ -34,6 +36,9 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     borderRadius: styling.borderRadius.largeBorderRadius,
   },
+  button: {
+    flexDirection: styling.flexDirection.row,
+  }
 })
 
 export default CustomButton

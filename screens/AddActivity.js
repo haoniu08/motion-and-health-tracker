@@ -52,14 +52,16 @@ export default function AddActivity({ navigation, item, isEdit }) {
     // a hearderRight button to delete the item, in the edit mode
     // delete from firebase, use deleteFromDB
 
-    navigation.setOptions({
-      headerRight: () => (
-        <DeleteIcon
-        onPress={() => handleDeletePress(item, handleDelete, navigation)}
-        color={currentTheme.color}
-        />
-      ),
-    });
+    if (isEdit) {
+      navigation.setOptions({
+        headerRight: () => (
+          <DeleteIcon
+            onPress={() => handleDeletePress(item, handleDelete, navigation)}
+            color={currentTheme.color}
+          />
+        ),
+      });
+    } 
   }, [isEdit, item]);
 
   function handleSavePress() {

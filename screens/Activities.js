@@ -4,6 +4,7 @@ import ItemList from '../components/ItemList'
 import { useTheme } from '../context/ThemeContext'
 import { Ionicons } from '@expo/vector-icons';
 import styling from '../utils/StylingUtils';
+import CustomButton from '../components/CustomButton';
 // import { database } from '../Firebase/firebaseSetup';
 
 export default function Activities({ navigation }) {
@@ -21,20 +22,20 @@ export default function Activities({ navigation }) {
       headerTintColor: currentTheme.color,
       headerRight: () => (
         <View style={styles.iconContainer}>
-          <Ionicons 
-            name="add" 
-            size={styling.fontSize.extraLargeFontSize} 
-            color={styling.colors.white}
-            onPress={handleAddPress} 
-            style={styles.icon}
-          />
-          <Ionicons 
-            name="walk" 
-            size={styling.fontSize.extraLargeFontSize}
-            color={styling.colors.white} 
-            onPress={handleAddPress} 
-            style={styles.icon}
-          />
+          <CustomButton onPress={handleAddPress} customeStyle={styles.iconButton}>
+            <Ionicons 
+              name="add" 
+              size={styling.fontSize.extraLargeFontSize} 
+              color={styling.colors.white}
+              style={styles.icon}
+            />
+            <Ionicons 
+              name="walk" 
+              size={styling.fontSize.extraLargeFontSize}
+              color={styling.colors.white} 
+              style={styles.icon}
+            />
+          </CustomButton>
         </View>
       ),
     });

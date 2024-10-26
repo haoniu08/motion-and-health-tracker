@@ -4,6 +4,7 @@ import ItemList from '../components/ItemList'
 import { useTheme } from '../context/ThemeContext'
 import styling from '../utils/StylingUtils';
 import { Ionicons } from '@expo/vector-icons';
+import CustomButton from '../components/CustomButton';
 
 export default function Diet({ navigation }) {
 
@@ -20,20 +21,20 @@ export default function Diet({ navigation }) {
       headerTintColor: currentTheme.color,
       headerRight: () => (
         <View style={styles.iconContainer}>
-          <Ionicons 
-            name="add" 
-            size={styling.fontSize.extraLargeFontSize} 
-            color={styling.colors.white}
-            onPress={handleAddPress} 
-            style={styles.icon}
-          />
-          <Ionicons 
-            name="fast-food" 
-            size={styling.fontSize.extraLargeFontSize}
-            color={styling.colors.white} 
-            onPress={handleAddPress} 
-            style={styles.icon}
-          />
+          <CustomButton onPress={handleAddPress} customeStyle={styles.iconButton}>
+            <Ionicons 
+              name="add" 
+              size={styling.fontSize.extraLargeFontSize} 
+              color={styling.colors.white}
+              style={styles.icon}
+            />
+            <Ionicons 
+              name="fast-food" 
+              size={styling.fontSize.extraLargeFontSize}
+              color={styling.colors.white} 
+              style={styles.icon}
+            />
+          </CustomButton>
         </View>
       ),
     });

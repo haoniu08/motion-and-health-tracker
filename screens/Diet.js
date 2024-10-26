@@ -2,6 +2,9 @@ import { StyleSheet, View, Button } from 'react-native'
 import { React, useEffect } from 'react'
 import ItemList from '../components/ItemList'
 import { useTheme } from '../context/ThemeContext'
+import styling from '../utils/StylingUtils';
+import { Ionicons } from '@expo/vector-icons';
+import CustomButton from '../components/CustomButton';
 
 export default function Diet({ navigation }) {
 
@@ -17,17 +20,29 @@ export default function Diet({ navigation }) {
       headerStyle: { backgroundColor: currentTheme.headerColor }, // Update header color based on theme
       headerTintColor: currentTheme.color,
       headerRight: () => (
-        <Button 
-          title="Add" 
-          onPress={handleAddPress}
-        />
+        <View style={styles.iconContainer}>
+          <CustomButton onPress={handleAddPress} customeStyle={styles.iconButton}>
+            <Ionicons 
+              name="add" 
+              size={styling.fontSize.extraLargeFontSize} 
+              color={styling.colors.white}
+              style={styles.icon}
+            />
+            <Ionicons 
+              name="fast-food" 
+              size={styling.fontSize.extraLargeFontSize}
+              color={styling.colors.white} 
+              style={styles.icon}
+            />
+          </CustomButton>
+        </View>
       ),
     });
   }, [navigation, currentTheme]);
 
   return (
     <View style={[styles.container, { backgroundColor: currentTheme.backgroundColor }]}>
-      <ItemList type="diet" />
+      <ItemList type="diet"  navigation={navigation}/>
     </View>
   );
 }
@@ -35,5 +50,9 @@ export default function Diet({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  iconContainer: {
+    flexDirection: styling.flexDirection.row,
+    marginRight: styling.margins.largeMargin,
   },
 });

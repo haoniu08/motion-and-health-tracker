@@ -1,19 +1,28 @@
-import { StyleSheet, View, Alert, Keyboard, TouchableWithoutFeedback } from 'react-native';
-import { React, useState, useContext } from 'react';
+import { StyleSheet, View, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import CustomText from '../components/CustomText';
 import CustomTextInput from '../components/CustomTextInput';
 import CustomDateTimePicker from '../components/CustomDateTimePicker';
 import SaveCancelButtonGroup from '../components/SaveCancelButtonGroup';
-import { DataContext } from '../context/DataContext';
 import { useTheme } from '../context/ThemeContext';
 import styling from '../utils/StylingUtils';
+import { writeToDB, updateDB } from '../Firebase/firebaseHelper';
+import DeleteIcon from '../components/DeleteIcon';
+import CheckBoxForApproval from '../components/CheckBoxForApproval';
+import { 
+  handleCancelPress, 
+  showAlert, 
+  handleEditSave,  
+  handleSaveAction,
+  isSpecialEntry,
+  handleDelete,
+  handleDeletePress,
+} from '../utils/HelperUtils';
 
-export default function AddActivity({ navigation }) {
+export default function AddActivity({ navigation, item, isEdit }) {
   const { currentTheme } = useTheme();
-  const { addActivity } = useContext(DataContext);
-
-  const [activityType, setActivityType] = useState('');
+  const [activityType, setActivityType] = useState(item?.type || '');
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
     { label: 'Walking', value: 'Walking' },
@@ -25,27 +34,59 @@ export default function AddActivity({ navigation }) {
     { label: 'Hiking', value: 'Hiking' },
   ]);
 
-  const [duration, setDuration] = useState('');
-  const [date, setDate] = useState(null);
+  const [duration, setDuration] = useState(item?.duration || '');
+  const [date, setDate] = useState(item ? new Date(item.date) : null);
+  const [isSpecial, setIsSpecial] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
+  const [showSpecialCheckbox, setShowSpecialCheckbox] = useState(false);
+
+  useEffect(() => {
+    if (isEdit && item) {
+      setActivityType(item.type);
+      setDuration(item.duration.toString());
+      setDate(new Date(item.date));
+      setIsSpecial(item.isSpecial || false);
+      setIsApproved(item.isApproved || false);
+      setShowSpecialCheckbox(item.isSpecial && !item.isApproved);
+    }
+    // a hearderRight button to delete the item, in the edit mode
+    // delete from firebase, use deleteFromDB
+
+    if (isEdit) {
+      navigation.setOptions({
+        headerRight: () => (
+          <DeleteIcon
+            onPress={() => handleDeletePress(item, handleDelete, navigation)}
+            color={currentTheme.color}
+          />
+        ),
+      });
+    } 
+  }, [isEdit, item]);
 
   function handleSavePress() {
     if (validateInput()) {
       const adjustedDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+      
+      // Update the isSpecial value based on the logic
+      const isSpecialValue = isSpecialEntry({ type: activityType, duration });
+  
       const newActivity = {
         type: activityType,
         duration: parseInt(duration),
         date: adjustedDate.toISOString(),
+        isSpecial: isSpecialValue,
+        isApproved: isApproved,
       };
-
-      addActivity(newActivity);
-      console.log('Activity added:', newActivity);
-
+  
+      if (isEdit) {
+        updateDB(item.id, newActivity, 'activities');
+      } else {
+        writeToDB(newActivity, 'activities');
+      }
+  
       navigation.goBack();
     }
-  }
-
-  function handleCancelPress() {
-    navigation.goBack();
   }
 
   function validateInput() {
@@ -62,10 +103,6 @@ export default function AddActivity({ navigation }) {
       return false;
     }
     return true;
-  }
-
-  function showAlert(message) {
-    Alert.alert('Invalid Input', message, [{ text: 'OK' }], { cancelable: true });
   }
 
   return (
@@ -89,6 +126,7 @@ export default function AddActivity({ navigation }) {
           style={styles.input}
           keyboardType="numeric"
           onChangeText={setDuration}
+          value={duration.toString()}
         />
 
         <CustomText style={[styles.title, { color: currentTheme.toggleColor }]}>Date *</CustomText>
@@ -97,10 +135,18 @@ export default function AddActivity({ navigation }) {
           selectedDate={date}
           onDateChange={setDate}
         />
+        
+        {isEdit && showSpecialCheckbox && (
+          <CheckBoxForApproval
+            isApproved={isApproved}
+            setIsApproved={setIsApproved}
+            currentTheme={currentTheme}
+          />
+        )}
 
         <SaveCancelButtonGroup 
-          onCancelPress={handleCancelPress}
-          onSavePress={handleSavePress}
+          onCancelPress={() => handleCancelPress(navigation)}
+          onSavePress={() => handleSaveAction(isEdit, handleEditSave, handleSavePress)}
         />
       </View>
     </TouchableWithoutFeedback>

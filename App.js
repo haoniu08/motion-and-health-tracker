@@ -9,13 +9,17 @@ import Diet from './screens/Diet';
 import Settings from './screens/Settings';
 import AddActivity from './screens/AddActivity';
 import AddDiet from './screens/AddDiet';
-import DataProvider from './context/DataContext';
+import Edit from './screens/Edit';
+// import DataProvider from './context/DataContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
+import { database } from "./Firebase/firebaseSetup";
 
 const BottomTab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 function BottomTabs() {
+  console.log(database);
+
   const { currentTheme } = useTheme();
   return (
     <BottomTab.Navigator
@@ -70,6 +74,14 @@ function ThemedApp() {
             headerBackTitle: "Diet",
           }}
         />
+        <Stack.Screen
+          name="Edit"
+          component={Edit}
+          options={{
+            title: "Edit",
+            headerBackTitle: "Back",
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -78,9 +90,9 @@ function ThemedApp() {
 export default function App() {
   return (
     <ThemeProvider>
-      <DataProvider>
+      {/* <DataProvider> */}
         <ThemedApp />
-      </DataProvider>
+      {/* </DataProvider> */}
     </ThemeProvider>
   );
 }
